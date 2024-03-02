@@ -1,7 +1,9 @@
 export class Hand {
   cards: number[];
+  name: string;
 
-  constructor() {
+  constructor(name: string) {
+    this.name = name;
     this.cards = [];
   }
 
@@ -9,7 +11,7 @@ export class Hand {
     if (this.cards.includes(card)) {
       throw new Error("This card is already in your hand");
     }
-    return this.cards.pop();
+    return this.cards.push(card);
   }
 
   throwCard(card: number) {

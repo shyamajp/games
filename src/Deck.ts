@@ -5,12 +5,13 @@ export class Deck {
 
   constructor(jokers: number = 2) {
     this.jokers = jokers;
-    this.cards = this.create();
+    this.cards = [];
     this.cardCount = 52 + jokers;
+    this.init();
   }
 
-  create() {
-    return [...Array(this.cardCount).keys()];
+  init() {
+    this.cards = [...Array(this.cardCount).keys()];
   }
 
   shuffle() {
@@ -21,7 +22,7 @@ export class Deck {
     if (this.cards.length === 0) {
       throw new Error("No cards left in the deck");
     }
-    return this.cards.pop();
+    return this.cards.pop()!;
   }
 
   add(card: number) {
