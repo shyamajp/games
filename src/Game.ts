@@ -2,7 +2,7 @@ import { Deck } from "./Deck";
 import { Hand } from "./Hand";
 
 export class Game {
-  players: number;
+  private players: number;
   deck: Deck;
   hands: Hand[];
   turn: number;
@@ -16,6 +16,10 @@ export class Game {
 
   init() {
     this.deck.shuffle();
+    this.distribute();
+  }
+
+  distribute() {
     while (this.deck.cards.length > 0) {
       const currentPlayer = this.getCurrentPlayer();
       currentPlayer.add(this.deck.remove());
