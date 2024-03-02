@@ -18,13 +18,6 @@ export class Deck {
     return this.cards.sort(() => Math.random() - 0.5);
   }
 
-  remove() {
-    if (this.cards.length === 0) {
-      throw new Error("No cards left in the deck");
-    }
-    return this.cards.pop()!;
-  }
-
   add(card: number) {
     if (this.cards.includes(card)) {
       throw new Error("This card is already in the deck");
@@ -33,5 +26,13 @@ export class Deck {
       throw new Error("This card should not be in the deck");
     }
     this.cards.push(card);
+    return card;
+  }
+
+  remove() {
+    if (this.cards.length === 0) {
+      throw new Error("No cards left in the deck");
+    }
+    return this.cards.pop()!;
   }
 }
