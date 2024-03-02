@@ -1,27 +1,60 @@
-import { SUITES_SYMBOLS } from "./constants";
+export enum SUITES {
+  CLUBS,
+  DIAMONDS,
+  HEARTS,
+  SPADES,
+}
+
+export enum SUITES_SYMBOLS {
+  "♣",
+  "♦",
+  "♥",
+  "♠",
+}
 
 export class Card {
   card: number;
+  suite: number;
+  num: number | string;
 
   constructor(c: number) {
     this.card = c;
+    this.suite = Math.floor(c / 13);
+    this.num = (c % 13) + 1;
   }
 
-  display() {
+  getSuite(pretty: boolean = false) {
+    if (pretty) {
+      return SUITES_SYMBOLS[this.suite];
+    }
+    return this.suite;
+  }
+
+  getNumber(pretty: boolean = false): number | string {
     if (this.card > 51) {
       return "Joker";
     }
-    const s = Math.floor(this.card / 13);
-    let n: number | string = (this.card % 13) + 1;
-    if (n === 1) {
-      n = "A";
-    } else if (n === 11) {
-      n = "J";
-    } else if (n === 12) {
-      n = "Q";
-    } else if (n === 13) {
-      n = "K";
+    if (pretty) {
+      switch ((this.card % 13) + 1) {
+        case 1:
+          return "A";
+        case 11:
+          return "J";
+        case 12:
+          return "Q";
+        case 13:
+          return "K";
+      }
     }
-    return `${SUITES_SYMBOLS[s]}${n}`;
+    return this.num;
+  }
+
+  display() {
+    const n = this.getNumber(true);
+    const suite = this.getSuite(true);
+    if (n === "Joker") {
+      return "Joker";
+    }
+    return `${suite}${n}`;
   }
 }
