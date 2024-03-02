@@ -18,7 +18,7 @@ export class Deck {
     return this.cards.sort(() => Math.random() - 0.5);
   }
 
-  draw() {
+  remove() {
     if (this.cards.length === 0) {
       throw new Error("No cards left in the deck");
     }

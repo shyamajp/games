@@ -7,14 +7,14 @@ export class Hand {
     this.cards = [];
   }
 
-  drawCard(card: number) {
+  add(card: number) {
     if (this.cards.includes(card)) {
       throw new Error("This card is already in your hand");
     }
     return this.cards.push(card);
   }
 
-  throwCard(card: number) {
+  remove(card: number) {
     const index = this.cards.indexOf(card);
     if (index > -1) {
       throw new Error("This card is not in your hand");

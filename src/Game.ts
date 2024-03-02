@@ -18,7 +18,7 @@ export class Game {
     this.deck.shuffle();
     while (this.deck.cards.length > 0) {
       const currentPlayer = this.getCurrentPlayer();
-      currentPlayer.drawCard(this.deck.draw());
+      currentPlayer.add(this.deck.remove());
       this.turn++;
     }
   }
