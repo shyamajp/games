@@ -25,7 +25,6 @@ export class OldMaid extends Game {
         }
       }
     }
-
     skipCards.forEach((c) => currentPlayer.remove(c));
   }
 
@@ -34,5 +33,10 @@ export class OldMaid extends Game {
   }
   end() {
     console.log("OldMaid game ended");
+  }
+
+  nextTurn(): void {
+    super.nextTurn();
+    this.removePairs();
   }
 }

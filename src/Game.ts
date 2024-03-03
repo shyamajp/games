@@ -39,4 +39,8 @@ export class Game {
   end() {
     console.log("game ended");
   }
+
+  nextTurn() {
+    this.turn++;
+  }
 }
