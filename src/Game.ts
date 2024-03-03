@@ -32,6 +32,10 @@ export class Game {
     return this.hands[this.turn % this.players];
   }
 
+  getNextPlayer() {
+    return this.hands[(this.turn + 1) % this.players];
+  }
+
   start() {
     console.log("game started");
   }

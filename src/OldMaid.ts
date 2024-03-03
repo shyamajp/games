@@ -1,5 +1,6 @@
 import { Card } from "./Card";
 import { Game } from "./Game";
+import { getRandomElement } from "./utils";
 
 export class OldMaid extends Game {
   init() {
@@ -33,6 +34,14 @@ export class OldMaid extends Game {
     skipCards.forEach((c) => currentPlayer.remove(c));
   }
 
+  pickCard() {
+    const currentPlayer = this.getCurrentPlayer();
+    const nextPlayer = this.getNextPlayer();
+
+    const card = getRandomElement(nextPlayer.cards);
+    currentPlayer.add(nextPlayer.remove(card));
+  }
+
   start() {
     console.log("OldMaid game started");
   }
@@ -43,6 +52,7 @@ export class OldMaid extends Game {
 
   nextTurn(): void {
     super.nextTurn();
+    this.pickCard();
     this.removePairs();
   }
 }
