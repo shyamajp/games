@@ -1,7 +1,9 @@
 import { Card } from "./Card";
+import { Deck } from "./Deck";
 import { OldMaid } from "./OldMaid";
 
-const game = new OldMaid(4);
+const deck = new Deck(1);
+const game = new OldMaid(deck, 4);
 
 const player1 = game.hands[0].cards;
 

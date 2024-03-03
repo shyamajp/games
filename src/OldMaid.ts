@@ -2,10 +2,6 @@ import { Card } from "./Card";
 import { Game } from "./Game";
 
 export class OldMaid extends Game {
-  constructor(players: number, jokers = 1) {
-    super(players, jokers);
-  }
-
   init() {
     super.init();
     this.removePairs();

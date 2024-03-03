@@ -6,9 +6,9 @@ export class Game {
   deck: Deck;
   hands: Hand[];
   turn: number;
-  constructor(players: number, jokers = 2) {
+  constructor(deck: Deck, players: number) {
     this.players = players;
-    this.deck = new Deck(jokers);
+    this.deck = deck;
     this.hands = [...Array(players).keys()].map((i) => new Hand("Player " + i));
     this.turn = 0;
     this.init();
