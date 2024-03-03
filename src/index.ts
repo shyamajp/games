@@ -8,10 +8,10 @@ const game = new OldMaid(deck, 4);
 function handleClick(button: HTMLButtonElement, board: HTMLDivElement) {
   const setCounter = () => {
     button.innerHTML = `turn: ${game.turn} by ${game.getCurrentPlayer().name}`;
-    board.innerHTML = game.hands
+    board.innerHTML = game.players
       .map(
-        (hand, i) =>
-          `<div>Player ${i} - ${hand.cards
+        (player, i) =>
+          `<div>Player ${i} - ${player.cards
             .map((c) => new Card(c).display())
             .join("")}</div>`
       )

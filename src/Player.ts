@@ -1,4 +1,4 @@
-export class Hand {
+export class Player {
   cards: number[];
   readonly name: string;
 

@@ -1,15 +1,17 @@
 import { Deck } from "./Deck";
-import { Hand } from "./Hand";
+import { Player } from "./Player";
 
 export class Game {
-  protected players: number;
+  protected playerCount: number;
   deck: Deck;
-  hands: Hand[];
+  players: Player[];
   turn: number;
-  constructor(deck: Deck, players: number) {
-    this.players = players;
+  constructor(deck: Deck, playerCount: number) {
+    this.playerCount = playerCount;
     this.deck = deck;
-    this.hands = [...Array(players).keys()].map((i) => new Hand("Player " + i));
+    this.players = [...Array(playerCount).keys()].map(
+      (i) => new Player("Player " + i)
+    );
     this.turn = 0;
     this.init();
   }
@@ -29,11 +31,11 @@ export class Game {
   }
 
   getCurrentPlayer() {
-    return this.hands[this.turn % this.players];
+    return this.players[this.turn % this.playerCount];
   }
 
   getNextPlayer() {
-    return this.hands[(this.turn + 1) % this.players];
+    return this.players[(this.turn + 1) % this.playerCount];
   }
 
   start() {

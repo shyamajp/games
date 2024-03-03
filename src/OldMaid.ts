@@ -6,7 +6,7 @@ export class OldMaid extends Game {
   init() {
     super.init();
     console.log("Removing all pairs");
-    for (let i = 0; i < this.players; i++) {
+    for (let i = 0; i < this.playerCount; i++) {
       this.removePairs();
       this.turn++;
     }
