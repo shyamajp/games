@@ -11,8 +11,22 @@ export class OldMaid extends Game {
     const currentPlayer = this.getCurrentPlayer();
     const cards = currentPlayer.cards.map((card) => new Card(card));
 
-    console.log(cards);
-    // TODO: implement the logic to remove pairs
+    const skipIndex: number[] = [];
+    const skipCards: number[] = [];
+    for (let i = 0; i < cards.length; i++) {
+      for (let j = i + 1; j < cards.length; j++) {
+        if (
+          !skipIndex.includes(i) &&
+          !skipIndex.includes(j) &&
+          cards[i].num === cards[j].num
+        ) {
+          skipIndex.push(i, j);
+          skipCards.push(cards[i].card, cards[j].card);
+        }
+      }
+    }
+
+    skipCards.forEach((c) => currentPlayer.remove(c));
   }
 
   start() {
