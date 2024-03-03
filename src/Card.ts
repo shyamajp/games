@@ -13,9 +13,9 @@ export enum SUITES_SYMBOLS {
 }
 
 export class Card {
-  card: number;
-  suite: number;
-  num: number | string;
+  readonly card: number;
+  readonly suite: SUITES;
+  readonly num: number | string;
 
   constructor(c: number) {
     this.card = c;
@@ -46,7 +46,7 @@ export class Card {
           return "K";
       }
     }
-    return this.num;
+    return (this.card % 13) + 1;
   }
 
   display() {

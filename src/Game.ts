@@ -2,7 +2,7 @@ import { Deck } from "./Deck";
 import { Hand } from "./Hand";
 
 export class Game {
-  private players: number;
+  protected players: number;
   deck: Deck;
   hands: Hand[];
   turn: number;
@@ -17,6 +17,7 @@ export class Game {
   init() {
     this.deck.shuffle();
     this.distribute();
+    this.turn = 0;
   }
 
   distribute() {

@@ -1,6 +1,6 @@
 export class Hand {
   cards: number[];
-  name: string;
+  readonly name: string;
 
   constructor(name: string) {
     this.name = name;
@@ -23,7 +23,7 @@ export class Hand {
 
   remove(card: number) {
     const index = this.cards.indexOf(card);
-    if (index > -1) {
+    if (index < -1) {
       throw new Error("This card is not in your hand");
     }
     this.cards.splice(index, 1);
