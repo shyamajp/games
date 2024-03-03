@@ -66,6 +66,10 @@ export class OldMaid extends Game {
       this.removePairs();
       this.judge();
     }
+
+    if (this.getPlayerCount() === 1) {
+      this.end();
+    }
     super.nextTurn();
   }
 }

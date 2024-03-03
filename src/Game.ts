@@ -30,6 +30,12 @@ export class Game {
     }
   }
 
+  getPlayerCount() {
+    return this.players.filter(
+      (player) => player.status === PlayerStatus.isPlaying
+    ).length;
+  }
+
   getCurrentPlayer() {
     return this.players[this.turn % this.playerCount];
   }
