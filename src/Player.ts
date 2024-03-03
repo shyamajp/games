@@ -1,10 +1,18 @@
+export enum PlayerStatus {
+  isPlaying,
+  hasWon,
+  hasLost,
+}
+
 export class Player {
   cards: number[];
   readonly name: string;
+  status: PlayerStatus;
 
   constructor(name: string) {
     this.name = name;
     this.cards = [];
+    this.status = PlayerStatus.isPlaying;
   }
 
   sort() {

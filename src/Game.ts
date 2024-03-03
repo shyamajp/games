@@ -1,5 +1,5 @@
 import { Deck } from "./Deck";
-import { Player } from "./Player";
+import { Player, PlayerStatus } from "./Player";
 
 export class Game {
   protected playerCount: number;
@@ -34,7 +34,15 @@ export class Game {
     return this.players[this.turn % this.playerCount];
   }
 
-  getNextPlayer() {
+  getNextPlayer(checkStatus = true) {
+    if (checkStatus) {
+      for (let i = 1; i < this.playerCount; i++) {
+        const player = this.players[(this.turn + i) % this.playerCount];
+        if (player.status === PlayerStatus.isPlaying) {
+          return player;
+        }
+      }
+    }
     return this.players[(this.turn + 1) % this.playerCount];
   }
 
