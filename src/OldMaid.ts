@@ -33,6 +33,10 @@ export class OldMaid extends Game {
     skipCards.forEach((c) => currentPlayer.remove(c));
   }
 
+  start() {
+    console.log("OldMaid game started");
+  }
+
   end() {
     console.log("OldMaid game ended");
   }
