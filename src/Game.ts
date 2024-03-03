@@ -6,12 +6,10 @@ export class Game {
   deck: Deck;
   players: Player[];
   turn: number;
-  constructor(deck: Deck, playerCount: number) {
-    this.playerCount = playerCount;
+  constructor(deck: Deck, players: Player[]) {
     this.deck = deck;
-    this.players = [...Array(playerCount).keys()].map(
-      (i) => new Player("Player " + i)
-    );
+    this.players = players;
+    this.playerCount = this.getPlayerCount();
     this.turn = 0;
     this.init();
   }

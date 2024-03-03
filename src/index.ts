@@ -1,10 +1,15 @@
 import { Card } from "./Card";
 import { Deck } from "./Deck";
 import { OldMaid } from "./OldMaid";
-import { PlayerStatus } from "./Player";
+import { Player, PlayerStatus } from "./Player";
 
 const deck = new Deck(1);
-const game = new OldMaid(deck, 4);
+
+const game = new OldMaid(deck, [
+  new Player("Alice"),
+  new Player("Bob"),
+  new Player("Charlie"),
+]);
 
 function handleClick(button: HTMLButtonElement, board: HTMLDivElement) {
   const setCounter = () => {
@@ -12,7 +17,7 @@ function handleClick(button: HTMLButtonElement, board: HTMLDivElement) {
     board.innerHTML = game.players
       .map(
         (player, i) =>
-          `<div>Player ${i}(${PlayerStatus[player.status]}) - ${player.cards
+          `<div>${player.name} (${PlayerStatus[player.status]}) - ${player.cards
             .map((c) => new Card(c).display())
             .join(" | ")}</div>`
       )
