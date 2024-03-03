@@ -28,7 +28,7 @@ export class OldMaid extends Game {
           cards[i].num === cards[j].num
         ) {
           skipIndex.push(i, j);
-          skipCards.push(cards[i].card, cards[j].card);
+          skipCards.push(cards[i].raw, cards[j].raw);
         }
       }
     }
@@ -56,6 +56,7 @@ export class OldMaid extends Game {
   }
 
   end() {
+    super.end();
     console.log("OldMaid game ended");
   }
 

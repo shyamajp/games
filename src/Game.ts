@@ -1,26 +1,33 @@
 import { Deck } from "./Deck";
 import { Player, PlayerStatus } from "./Player";
 
+export enum GameStatus {
+  isPlaying,
+  isOver,
+}
+
 export class Game {
   protected playerCount: number;
   deck: Deck;
   players: Player[];
   turn: number;
+  status: GameStatus;
   constructor(deck: Deck, players: Player[]) {
     this.deck = deck;
     this.players = players;
     this.playerCount = this.getPlayerCount();
     this.turn = 0;
+    this.status = GameStatus.isPlaying;
     this.init();
   }
 
-  init() {
+  private init() {
     this.deck.shuffle();
     this.distribute();
     this.turn = 0;
   }
 
-  distribute() {
+  private distribute() {
     while (this.deck.cards.length > 0) {
       const currentPlayer = this.getCurrentPlayer();
       currentPlayer.add(this.deck.remove());
@@ -55,10 +62,13 @@ export class Game {
   }
 
   end() {
+    this.status = GameStatus.isOver;
     console.log("game ended");
   }
 
   nextTurn() {
-    this.turn++;
+    if (this.status === GameStatus.isPlaying) {
+      this.turn++;
+    }
   }
 }
