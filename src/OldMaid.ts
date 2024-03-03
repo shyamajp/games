@@ -4,7 +4,12 @@ import { Game } from "./Game";
 export class OldMaid extends Game {
   init() {
     super.init();
-    this.removePairs();
+    console.log("Removing all pairs");
+    for (let i = 0; i < this.players; i++) {
+      this.removePairs();
+      this.turn++;
+    }
+    this.turn = 0;
   }
 
   removePairs() {
@@ -28,9 +33,6 @@ export class OldMaid extends Game {
     skipCards.forEach((c) => currentPlayer.remove(c));
   }
 
-  start() {
-    console.log("OldMaid game started");
-  }
   end() {
     console.log("OldMaid game ended");
   }
