@@ -1,16 +1,14 @@
 export class Deck {
-  private jokers: number;
   private cardCount: number;
   cards: number[];
 
-  constructor(jokers: number = 2) {
-    this.jokers = jokers;
+  constructor(jokerCount: number = 2) {
     this.cards = [];
-    this.cardCount = 52 + jokers;
+    this.cardCount = 52 + jokerCount;
     this.init();
   }
 
-  init() {
+  private init() {
     this.cards = [...Array(this.cardCount).keys()];
   }
 
