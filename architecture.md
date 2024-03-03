@@ -9,12 +9,15 @@ classDiagram
     Game <|-- OldMaid
     Game *-- Player
     Game *-- Deck
-    Player .. Card
-    Deck .. Card
+    Player -- Card
+    Deck -- Card
+    Suite .. Card
+    PlayerStatus .. Player
+    GameStatus .. Game
     class Player{
         +string name
         +number[] cards
-        +number status
+        +PlayerStatus status
         +sort()
         +add()
         +remove()
@@ -27,10 +30,12 @@ classDiagram
         +remove()
     }
     class Game {
-        +number playerCount
+        <<Abstract>>
         +Deck deck
         +Player[] players
+        +status GameStatus
         +number turn
+        -init()
         +start()
         +end()
         +judge()
@@ -40,9 +45,27 @@ classDiagram
         +removePairs()
         +pickCard()
     }
-    class Card{
+    class Card {
         +number num
-        +number suite
+        +Suite suite
         +display()
+    }
+    class Suite {
+        <<enumuration>>
+        CLUBS
+        DIAMONDS
+        HEARTS
+        SPADES
+    }
+    class PlayerStatus {
+        <<enumuration>>
+        IS_PLAYING
+        HAS_WON
+        HAS_LOST
+    }
+    class GameStatus {
+        <<enumuration>>
+        IS_PLAYING
+        IS_OVER
     }
 ```
