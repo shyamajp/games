@@ -46,7 +46,7 @@ export class OldMaid extends Game {
   judge() {
     const currentPlayer = this.getCurrentPlayer();
     if (currentPlayer.cards.length === 0) {
-      currentPlayer.status = PlayerStatus.hasWon;
+      currentPlayer.status = PlayerStatus.HAS_WON;
       console.log(`${currentPlayer.name} won the game!`);
     }
   }
@@ -62,7 +62,7 @@ export class OldMaid extends Game {
 
   nextTurn(): void {
     this.judge();
-    if (this.getCurrentPlayer().status === PlayerStatus.isPlaying) {
+    if (this.getCurrentPlayer().status === PlayerStatus.IS_PLAYING) {
       this.pickCard();
       this.removePairs();
       this.judge();

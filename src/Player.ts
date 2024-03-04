@@ -1,7 +1,7 @@
 export enum PlayerStatus {
-  isPlaying,
-  hasWon,
-  hasLost,
+  IS_PLAYING,
+  HAS_WON,
+  HAS_LOST,
 }
 
 export class Player {
@@ -12,7 +12,7 @@ export class Player {
   constructor(name: string) {
     this.name = name;
     this.cards = [];
-    this.status = PlayerStatus.isPlaying;
+    this.status = PlayerStatus.IS_PLAYING;
   }
 
   sort() {

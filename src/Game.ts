@@ -37,7 +37,7 @@ export class Game {
 
   getPlayerCount() {
     return this.players.filter(
-      (player) => player.status === PlayerStatus.isPlaying
+      (player) => player.status === PlayerStatus.IS_PLAYING
     ).length;
   }
 
@@ -49,7 +49,7 @@ export class Game {
     if (checkStatus) {
       for (let i = 1; i < this.playerCount; i++) {
         const player = this.players[(this.turn + i) % this.playerCount];
-        if (player.status === PlayerStatus.isPlaying) {
+        if (player.status === PlayerStatus.IS_PLAYING) {
           return player;
         }
       }
