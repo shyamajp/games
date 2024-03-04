@@ -16,7 +16,7 @@ function handleClick(button: HTMLButtonElement, board: HTMLDivElement) {
     button.innerHTML = `turn: ${game.turn} by ${game.getCurrentPlayer().name}`;
     board.innerHTML = game.players
       .map(
-        (player, i) =>
+        (player) =>
           `<div>${player.name} (${PlayerStatus[player.status]}) - ${player.cards
             .map((c) => new Card(c).display())
             .join(" | ")}</div>`

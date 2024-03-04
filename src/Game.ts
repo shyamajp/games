@@ -21,7 +21,7 @@ export class Game {
     this.init();
   }
 
-  private init() {
+  protected init() {
     this.deck.shuffle();
     this.distribute();
     this.turn = 0;

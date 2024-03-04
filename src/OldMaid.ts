@@ -4,7 +4,7 @@ import { PlayerStatus } from "./Player";
 import { getRandomElement } from "./utils";
 
 export class OldMaid extends Game {
-  init() {
+  protected init() {
     super.init();
     console.log("Removing all pairs");
     for (let i = 0; i < this.playerCount; i++) {
