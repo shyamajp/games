@@ -2,7 +2,7 @@
 
 ## Class diagram
 
-TBD
+TBU
 
 ```mermaid
 classDiagram
@@ -68,4 +68,23 @@ classDiagram
         IS_PLAYING
         IS_OVER
     }
+```
+
+## Workflow
+
+```mermaid
+timeline
+title Old Maid Workflow
+section initializing
+    DECK   : generate cards
+    GAME   : distribute cards
+    PLAYER : remove pairs
+section playing (loop)
+    PLAYER : pick card
+    GAME   : judge next player
+    GAME   : judge game
+    PLAYER : remove pairs
+    GAME   : judge current player
+    GAME   : judge game
+    GAME   : to next turn
 ```
