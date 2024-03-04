@@ -1,17 +1,45 @@
 import { Card } from "./Card";
 import { Game } from "./Game";
-import { PlayerStatus } from "./Player";
-import { getRandomElement } from "./utils";
+import { Player, PlayerStatus } from "./Player";
 
 export class OldMaid extends Game {
-  protected init() {
-    super.init();
-    console.log("Removing all pairs");
+  init() {
+    this.deck.shuffle();
+    this.distribute();
     for (let i = 0; i < this.playerCount; i++) {
       this.removePairs();
       this.turn++;
     }
     this.turn = 0;
+  }
+
+  routine(): void {
+    if (this.getCurrentPlayer().status === PlayerStatus.IS_PLAYING) {
+      this.transferCard();
+      this.judgePlayer(this.getNextPlayer());
+      this.removePairs();
+      this.judgePlayer();
+    }
+  }
+
+  next(): void {
+    this.routine();
+    this.judgeGame();
+
+    super.next();
+  }
+
+  judgePlayer(player: Player = this.getCurrentPlayer()) {
+    if (player.cards.length === 0) {
+      player.status = PlayerStatus.HAS_WON;
+      console.log(`${player.name} won the game!`);
+    }
+  }
+
+  judgeGame(): void {
+    if (this.getPlayerCount() === 1) {
+      this.end();
+    }
   }
 
   removePairs() {
@@ -35,42 +63,10 @@ export class OldMaid extends Game {
     skipCards.forEach((c) => currentPlayer.remove(c));
   }
 
-  pickCard() {
+  transferCard() {
     const currentPlayer = this.getCurrentPlayer();
     const nextPlayer = this.getNextPlayer();
-
-    const card = getRandomElement(nextPlayer.cards);
+    const card = nextPlayer.getRandomCard();
     currentPlayer.add(nextPlayer.remove(card));
-  }
-
-  judge() {
-    const currentPlayer = this.getCurrentPlayer();
-    if (currentPlayer.cards.length === 0) {
-      currentPlayer.status = PlayerStatus.HAS_WON;
-      console.log(`${currentPlayer.name} won the game!`);
-    }
-  }
-
-  start() {
-    console.log("OldMaid game started");
-  }
-
-  end() {
-    super.end();
-    console.log("OldMaid game ended");
-  }
-
-  nextTurn(): void {
-    this.judge();
-    if (this.getCurrentPlayer().status === PlayerStatus.IS_PLAYING) {
-      this.pickCard();
-      this.removePairs();
-      this.judge();
-    }
-
-    if (this.getPlayerCount() === 1) {
-      this.end();
-    }
-    super.nextTurn();
   }
 }

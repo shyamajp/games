@@ -22,7 +22,7 @@ function handleClick(button: HTMLButtonElement, board: HTMLDivElement) {
             .join(" | ")}</div>`
       )
       .join("");
-    game.nextTurn();
+    game.next();
   };
   button.addEventListener("load", () => setCounter());
   button.addEventListener("click", () => setCounter());

@@ -2,32 +2,49 @@ import { Deck } from "./Deck";
 import { Player, PlayerStatus } from "./Player";
 
 export enum GameStatus {
-  isPlaying,
-  isOver,
+  IS_PLAYING,
+  IS_OVER,
 }
 
-export class Game {
+export abstract class Game {
   protected playerCount: number;
   deck: Deck;
   players: Player[];
   turn: number;
   status: GameStatus;
+
   constructor(deck: Deck, players: Player[]) {
     this.deck = deck;
     this.players = players;
     this.playerCount = this.getPlayerCount();
     this.turn = 0;
-    this.status = GameStatus.isPlaying;
+    this.status = GameStatus.IS_PLAYING;
     this.init();
   }
 
-  protected init() {
-    this.deck.shuffle();
-    this.distribute();
-    this.turn = 0;
+  init(): void {}
+
+  start(): void {
+    this.status = GameStatus.IS_PLAYING;
   }
 
-  private distribute() {
+  end(): void {
+    this.status = GameStatus.IS_OVER;
+  }
+
+  abstract routine(): void;
+
+  next(): void {
+    if (this.status === GameStatus.IS_PLAYING) {
+      this.turn++;
+    }
+  }
+
+  abstract judgePlayer(player: Player): void;
+
+  abstract judgeGame(): void;
+
+  protected distribute(): void {
     while (this.deck.cards.length > 0) {
       const currentPlayer = this.getCurrentPlayer();
       currentPlayer.add(this.deck.remove());
@@ -35,17 +52,16 @@ export class Game {
     }
   }
 
-  getPlayerCount() {
-    return this.players.filter(
-      (player) => player.status === PlayerStatus.IS_PLAYING
-    ).length;
+  getPlayerCount(status?: PlayerStatus): number {
+    if (status === undefined) return this.players.length;
+    return this.players.filter((player) => player.status === status).length;
   }
 
-  getCurrentPlayer() {
+  getCurrentPlayer(): Player {
     return this.players[this.turn % this.playerCount];
   }
 
-  getNextPlayer(checkStatus = true) {
+  getNextPlayer(checkStatus = true): Player {
     if (checkStatus) {
       for (let i = 1; i < this.playerCount; i++) {
         const player = this.players[(this.turn + i) % this.playerCount];
@@ -55,20 +71,5 @@ export class Game {
       }
     }
     return this.players[(this.turn + 1) % this.playerCount];
-  }
-
-  start() {
-    console.log("game started");
-  }
-
-  end() {
-    this.status = GameStatus.isOver;
-    console.log("game ended");
-  }
-
-  nextTurn() {
-    if (this.status === GameStatus.isPlaying) {
-      this.turn++;
-    }
   }
 }
