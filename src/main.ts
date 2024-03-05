@@ -1,15 +1,8 @@
-import "./style.css";
-import { handleClick } from ".";
+import './app.css'
+import App from './App.svelte'
 
-document.querySelector<HTMLDivElement>("#app")!.innerHTML = `
-  <div>
-    <h1>Old Maid</h1>
-    <button id="button">Start</button>
-    <div id="board"></div>
-  </div>
-`;
+const app = new App({
+  target: document.getElementById('app'),
+})
 
-handleClick(
-  document.querySelector<HTMLButtonElement>("#button")!,
-  document.querySelector<HTMLDivElement>("#board")!
-);
+export default app
