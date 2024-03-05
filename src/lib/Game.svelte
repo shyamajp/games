@@ -1,5 +1,6 @@
 <script lang="ts">
-  import { Card } from "../logic/Card";
+  import Card from "./Card.svelte";
+
   import { Deck } from "../logic/Deck";
   import { OldMaid } from "../logic/OldMaid";
   import { Player, PlayerStatus } from "../logic/Player";
@@ -25,9 +26,10 @@
 <ul>
   {#each game.players as player}
     <li>
-      {player.name}: ({PlayerStatus[player.status]}) - {player.cards
-        .map((c) => new Card(c).display())
-        .join(" | ")}
+      {player.name}: ({PlayerStatus[player.status]})
     </li>
+    {#each player.cards as raw (raw)}
+      <Card {raw} />
+    {/each}
   {/each}
 </ul>

@@ -53,6 +53,12 @@ export class Card {
     return num;
   }
 
+  getColor(): string {
+    if (this.suite === Suite.DIAMONDS || this.suite === Suite.HEARTS)
+      return "red";
+    return "black";
+  }
+
   display() {
     const num = this.getNumber(true);
     const suite = this.getSuite(true) ?? "";
