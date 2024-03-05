@@ -1,11 +1,11 @@
 <script lang="ts">
-  import Counter from './lib/Counter.svelte'
+  import Game from './lib/Game.svelte';
 </script>
 
 <main>
   <h1>Vite + Svelte</h1>
   <div class="card">
-    <Counter />
+    <Game />
   </div>
 </main>
 
