@@ -1,8 +1,8 @@
 <script lang="ts">
-  import { Card } from "../Card";
-  import { Deck } from "../Deck";
-  import { OldMaid } from "../OldMaid";
-  import { Player, PlayerStatus } from "../Player";
+  import { Card } from "../logic/Card";
+  import { Deck } from "../logic/Deck";
+  import { OldMaid } from "../logic/OldMaid";
+  import { Player, PlayerStatus } from "../logic/Player";
 
   const deck = new Deck(1);
 
