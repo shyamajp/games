@@ -1,7 +1,7 @@
 <script lang="ts">
   import { Card } from "../logic/Card";
-
   export let raw: number;
+
   const card = new Card(raw);
   const content = card.display();
   const color = card.getColor();
