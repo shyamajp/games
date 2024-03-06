@@ -4,6 +4,8 @@
   import { OldMaid } from "../logic/OldMaid";
   import { Player, PlayerStatus } from "../logic/Player";
 
+  let picked: number | undefined;
+
   const deck = new Deck(1);
   let game = new OldMaid(deck, [
     new Player("Alice"),
@@ -11,19 +13,30 @@
     new Player("Charlie"),
   ]);
 
-  let picked: number | undefined;
-  function handleClick() {
-    game.updateInput(picked);
+  function handleStart() {
+    game.start();
+    game = game;
+  }
+
+  function handleNext() {
+    game.setInput(picked);
     game.next();
     game = game;
     picked = undefined;
   }
 </script>
 
-<button on:click={handleClick}>
+<button on:click={handleNext}>
   turn: {game.turn} ({game.getCurrentPlayer().name})
 </button>
 
+<button on:click={handleStart}>Start</button>
+
+<ul>
+  <li>game: {game.getStatus(true)}</li>
+  <li>players: {game.getPlayerCountByStatus(PlayerStatus.IS_PLAYING)}</li>
+</ul>
+<hr />
 <ul>
   {#each game.players as player (player.name)}
     <li>

@@ -1,18 +1,23 @@
 import { Card } from "./Card";
-import { Game } from "./Game";
+import { Deck } from "./Deck";
+import { Game, GameStatus } from "./Game";
 import { Player, PlayerStatus } from "./Player";
 
 export class OldMaid extends Game {
   input: number | undefined;
 
-  init() {
+  constructor(deck: Deck, players: Player[]) {
+    super(deck, players);
+    this.input = undefined;
+  }
+
+  protected init() {
     this.distribute();
     for (let i = 0; i < this.playerCount; i++) {
       this.removePairs();
       this.turn++;
     }
     this.turn = 0;
-    this.input = undefined;
   }
 
   routine(): void {
@@ -22,33 +27,29 @@ export class OldMaid extends Game {
       this.removePairs();
       this.judgePlayer();
     }
-  }
-
-  updateInput(raw: number | undefined): void {
-    this.input = raw;
+    this.judgeGame();
   }
 
   next(): void {
-    this.routine();
-    this.judgeGame();
-
-    super.next();
+    if (this.status === GameStatus.PLAYING) {
+      this.routine();
+      super.next();
+    }
   }
 
-  judgePlayer(player: Player = this.getCurrentPlayer()) {
-    if (player.cards.length === 0) {
-      player.status = PlayerStatus.HAS_WON;
-      console.log(`${player.name} won the game!`);
-    }
+  setInput(raw: number | undefined): void {
+    this.input = raw;
+  }
+
+  judgePlayer(player: Player = this.getCurrentPlayer()): void {
+    if (player.cards.length === 0) player.status = PlayerStatus.HAS_WON;
   }
 
   judgeGame(): void {
-    if (this.getPlayerCount() === 1) {
-      this.end();
-    }
+    if (this.getPlayerCountByStatus() === 1) this.end();
   }
 
-  removePairs() {
+  removePairs(): void {
     const currentPlayer = this.getCurrentPlayer();
     const cards = currentPlayer.cards.map((card) => new Card(card));
 
@@ -69,7 +70,7 @@ export class OldMaid extends Game {
     skipCards.forEach((c) => currentPlayer.remove(c));
   }
 
-  transferCard() {
+  transferCard(): void {
     const currentPlayer = this.getCurrentPlayer();
     const nextPlayer = this.getNextPlayer();
     const card = this.input || nextPlayer.getRandomCard();

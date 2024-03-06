@@ -2,40 +2,42 @@ import { Deck } from "./Deck";
 import { Player, PlayerStatus } from "./Player";
 
 export enum GameStatus {
-  IS_PLAYING,
-  IS_OVER,
+  PLAYING,
+  OVER,
+  INITIALIZING,
 }
+type PrettyStatus = keyof typeof GameStatus;
 
 export abstract class Game {
-  protected playerCount: number;
   deck: Deck;
   players: Player[];
   turn: number;
   status: GameStatus;
+  protected playerCount: number;
 
   constructor(deck: Deck, players: Player[]) {
     this.deck = deck;
     this.players = players;
-    this.playerCount = this.getPlayerCount();
+    this.playerCount = this.getPlayerCountByStatus();
     this.turn = 0;
-    this.status = GameStatus.IS_PLAYING;
+    this.status = GameStatus.INITIALIZING;
     this.init();
   }
 
-  init(): void {}
+  protected abstract init(): void;
 
   start(): void {
-    this.status = GameStatus.IS_PLAYING;
+    this.status = GameStatus.PLAYING;
   }
 
-  end(): void {
-    this.status = GameStatus.IS_OVER;
+  protected end(): void {
+    this.status = GameStatus.OVER;
   }
 
   abstract routine(): void;
 
-  next(): void {
-    if (this.status === GameStatus.IS_PLAYING) {
+  protected next(): void {
+    if (this.status === GameStatus.PLAYING) {
       this.turn++;
     }
   }
@@ -52,8 +54,16 @@ export abstract class Game {
     }
   }
 
-  getPlayerCount(status?: PlayerStatus): number {
-    if (status === undefined) return this.players.length;
+  getStatus(pretty: false): GameStatus;
+  getStatus(pretty: true): PrettyStatus;
+  getStatus(pretty: boolean = false) {
+    if (pretty) return GameStatus[this.status];
+    return this.status;
+  }
+
+  getPlayerCountByStatus(
+    status: PlayerStatus = PlayerStatus.IS_PLAYING
+  ): number {
     return this.players.filter((player) => player.status === status).length;
   }
 
