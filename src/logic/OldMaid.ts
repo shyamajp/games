@@ -6,7 +6,6 @@ export class OldMaid extends Game {
   input: number | undefined;
 
   init() {
-    this.deck.shuffle();
     this.distribute();
     for (let i = 0; i < this.playerCount; i++) {
       this.removePairs();

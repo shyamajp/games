@@ -1,4 +1,5 @@
 import { CardDealer } from "./CardDealer";
+import { IllegalCardError } from "./Error";
 
 export class Deck extends CardDealer {
   private cardCount: number;
@@ -9,14 +10,17 @@ export class Deck extends CardDealer {
     this.init();
   }
 
-  private init() {
+  protected init(): void {
     this.cards = [...Array(this.cardCount).keys()];
+    this.shuffle();
   }
 
   add(card: number): number {
     if (card >= this.cardCount) {
-      throw new Error("This card should not exit in the game");
+      throw new IllegalCardError();
     }
     return super.add(card);
   }
+
+  routine(): void {}
 }

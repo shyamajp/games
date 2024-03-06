@@ -16,7 +16,9 @@ export class Player extends CardDealer {
     this.status = PlayerStatus.IS_PLAYING;
   }
 
-  turn() {
+  protected init(): void {}
+
+  routine(): void {
     this.sort();
   }
 }
