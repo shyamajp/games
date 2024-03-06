@@ -1,12 +1,10 @@
 <script lang="ts">
-  import Game from "./lib/Game.svelte";
+  import OldMaid from "./lib/OldMaid.svelte";
 </script>
 
 <main>
-  <h1>Vite + Svelte</h1>
-  <div class="card">
-    <Game />
-  </div>
+  <h1>Old Maid</h1>
+  <OldMaid />
 </main>
 
 <style>
