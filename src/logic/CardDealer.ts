@@ -1,9 +1,12 @@
+import { v4 as uuidv4 } from "uuid";
 import { getRandomElement } from "./utils";
 
 export abstract class CardDealer {
   cards: number[];
+  id: string;
 
   constructor() {
+    this.id = uuidv4();
     this.cards = [];
   }
 
