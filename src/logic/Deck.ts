@@ -14,7 +14,7 @@ export class Deck extends CardDealer {
   }
 
   add(card: number): number {
-    if (card > this.cardCount) {
+    if (card >= this.cardCount) {
       throw new Error("This card should not exit in the game");
     }
     return super.add(card);
