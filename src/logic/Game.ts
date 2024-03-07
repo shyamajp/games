@@ -37,9 +37,7 @@ export abstract class Game {
   abstract routine(): void;
 
   protected next(): void {
-    if (this.status === GameStatus.PLAYING) {
-      this.turn++;
-    }
+    this.turn++;
   }
 
   abstract judgePlayer(player: Player): void;
