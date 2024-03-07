@@ -34,13 +34,21 @@
 
 <ul>
   <li>game: {game.getStatus(true)}</li>
-  <li>players: {game.getPlayerCountByStatus(PlayerStatus.IS_PLAYING)}</li>
+  <li>
+    players: {game.getPlayerCountByStatus(PlayerStatus.IS_PLAYING)} | CURRENT: {game.getCurrentPlayer()
+      .name}
+    | NEXT: {game.getNextPlayer().name}
+  </li>
 </ul>
 <hr />
 <ul>
   {#each game.players as player (player.name)}
     <li>
-      {player.name}: ({PlayerStatus[player.status]})
+      {#if player.name === game.getCurrentPlayer().name}
+        ▶️<strong>{player.name}</strong>: ({PlayerStatus[player.status]})
+      {:else}
+        {player.name}: ({PlayerStatus[player.status]})
+      {/if}
       <Cards
         cards={player.cards}
         name={player.name}
