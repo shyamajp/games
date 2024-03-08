@@ -1,5 +1,6 @@
 import { Deck } from "./Deck";
 import { Player, PlayerStatus } from "./Player";
+import { reorderArray } from "./utils";
 
 export enum GameStatus {
   PLAYING,
@@ -13,12 +14,10 @@ export abstract class Game {
   players: Player[];
   turn: number;
   status: GameStatus;
-  protected playerCount: number;
 
   constructor(deck: Deck, players: Player[]) {
     this.deck = deck;
     this.players = players;
-    this.playerCount = this.getPlayerCountByStatus();
     this.turn = 0;
     this.status = GameStatus.INITIALIZING;
     this.init();
@@ -50,6 +49,7 @@ export abstract class Game {
       currentPlayer.add(this.deck.remove());
       this.turn++;
     }
+    this.turn = 0;
   }
 
   getStatus(pretty: false): GameStatus;
@@ -59,25 +59,28 @@ export abstract class Game {
     return this.status;
   }
 
-  getPlayerCountByStatus(
-    status: PlayerStatus = PlayerStatus.IS_PLAYING
-  ): number {
-    return this.players.filter((player) => player.status === status).length;
+  getPlayers(status: PlayerStatus = PlayerStatus.IS_PLAYING): Player[] {
+    const players = this.players.filter((player) => player.status === status);
+    const index = players.findIndex(
+      (p) => p.id === this.players[this.turn % this.players.length].id
+    );
+    return reorderArray(players, index);
   }
 
   getCurrentPlayer(): Player {
-    return this.players[this.turn % this.playerCount];
+    let player = this.players[this.turn % this.players.length];
+    if (player.status !== PlayerStatus.IS_PLAYING) {
+      this.turn++;
+      return this.getNextPlayer();
+    }
+    return player;
   }
 
-  getNextPlayer(checkStatus = true): Player {
-    if (checkStatus) {
-      for (let i = 1; i < this.playerCount; i++) {
-        const player = this.players[(this.turn + i) % this.playerCount];
-        if (player.status === PlayerStatus.IS_PLAYING) {
-          return player;
-        }
-      }
+  getNextPlayer(): Player {
+    for (let i = 1; i < this.players.length; i++) {
+      const player = this.players[(this.turn + i) % this.players.length];
+      if (player.status === PlayerStatus.IS_PLAYING) return player;
     }
-    return this.players[(this.turn + 1) % this.playerCount];
+    return this.players[(this.turn + 1) % this.players.length];
   }
 }

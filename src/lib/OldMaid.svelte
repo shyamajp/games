@@ -27,7 +27,7 @@
 </script>
 
 <button on:click={handleNext}>
-  turn: {game.turn} ({game.getCurrentPlayer().name})
+  turn: {game.turn}
 </button>
 
 <button on:click={handleStart}>Start</button>
@@ -35,16 +35,17 @@
 <ul>
   <li>game: {game.getStatus(true)}</li>
   <li>
-    players: {game.getPlayerCountByStatus(PlayerStatus.IS_PLAYING)} | CURRENT: {game.getCurrentPlayer()
-      .name}
-    | NEXT: {game.getNextPlayer().name}
+    players: {game
+      .getPlayers()
+      .map((p) => p.name)
+      .join(" | ")}
   </li>
 </ul>
 <hr />
 <ul>
   {#each game.players as player (player.name)}
     <li>
-      {#if player.name === game.getCurrentPlayer().name}
+      {#if player.id === game.getCurrentPlayer().id}
         ▶️<strong>{player.name}</strong>: ({PlayerStatus[player.status]})
       {:else}
         {player.name}: ({PlayerStatus[player.status]})

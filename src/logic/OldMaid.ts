@@ -13,7 +13,7 @@ export class OldMaid extends Game {
 
   protected init() {
     this.distribute();
-    for (let i = 0; i < this.playerCount; i++) {
+    for (let i = 0; i < this.players.length; i++) {
       this.removePairs();
       this.turn++;
     }
@@ -21,20 +21,18 @@ export class OldMaid extends Game {
   }
 
   routine(): void {
-    if (this.getCurrentPlayer().status === PlayerStatus.IS_PLAYING) {
-      this.transferCard();
-      this.judgePlayer(this.getNextPlayer());
-      this.removePairs();
-      this.judgePlayer();
-    }
+    if (this.getCurrentPlayer().status !== PlayerStatus.IS_PLAYING) return;
+    this.transferCard();
+    this.judgePlayer(this.getNextPlayer());
+    this.removePairs();
+    this.judgePlayer();
     this.judgeGame();
   }
 
   next(): void {
-    if (this.status === GameStatus.PLAYING) {
-      this.routine();
-      super.next();
-    }
+    if (this.status === GameStatus.OVER) return;
+    this.routine();
+    super.next();
   }
 
   setInput(raw: number | undefined): void {
@@ -46,7 +44,7 @@ export class OldMaid extends Game {
   }
 
   judgeGame(): void {
-    if (this.getPlayerCountByStatus() === 1) this.end();
+    if (this.getPlayers().length === 1) this.end();
   }
 
   removePairs(): void {
