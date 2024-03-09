@@ -3,6 +3,9 @@ export function getRandomElement<T>(arr: T[]): T {
 }
 
 export function reorderArray<T>(arr: T[], index: number): T[] {
+  if (index < 0) {
+    throw new Error("Given index does not exist in its array.");
+  }
   if (arr.length < index) {
     throw new Error("Given index is bigger than its array length.");
   }
