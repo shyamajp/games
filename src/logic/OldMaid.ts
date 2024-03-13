@@ -16,7 +16,6 @@ export class OldMaid extends Game {
     for (let i = 0; i < this.players.length; i++) {
       const currentPlayer = this.players[i];
       this.removePairs(currentPlayer);
-      currentPlayer.sort();
       this.turn++;
     }
     this.turn = 0;
@@ -25,7 +24,6 @@ export class OldMaid extends Game {
   protected routine(): void {
     const currentPlayer = this.getCurrentPlayer();
     this.transferCard();
-    currentPlayer.sort();
     this.judge();
     this.removePairs(currentPlayer);
     this.judge();

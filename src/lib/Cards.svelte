@@ -4,6 +4,7 @@
   export let name: string;
   export let pickable: boolean = false;
   export let picked: number | undefined;
+  export let hidden: boolean;
 </script>
 
 <div>
@@ -17,7 +18,7 @@
         disabled={!pickable}
         bind:group={picked}
       />
-      <Card {raw} />
+      <Card {raw} {hidden} />
     </label>
   {/each}
 </div>

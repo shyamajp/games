@@ -1,6 +1,7 @@
 <script lang="ts">
   import { Card } from "../logic/Card";
   export let raw: number;
+  export let hidden: boolean;
 
   const card = new Card(raw);
   const content = card.display();
@@ -8,7 +9,7 @@
 </script>
 
 <div class="card" style="color:{color}">
-  {content}
+  {!hidden ? content : ""}
 </div>
 
 <style>

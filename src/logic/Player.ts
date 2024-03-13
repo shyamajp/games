@@ -9,16 +9,16 @@ export enum PlayerStatus {
 export class Player extends CardDealer {
   readonly name: string;
   status: PlayerStatus;
+  isComputer: boolean;
 
-  constructor(name: string) {
+  constructor(name?: string) {
     super();
-    this.name = name;
+    this.name = name || "Computer";
+    this.isComputer = !name;
     this.status = PlayerStatus.IS_PLAYING;
   }
 
   protected init(): void {}
 
-  routine(): void {
-    this.sort();
-  }
+  routine(): void {}
 }

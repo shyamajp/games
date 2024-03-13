@@ -10,8 +10,8 @@
   const deck = new Deck(1);
   let game = new OldMaid(deck, [
     new Player("Alice"),
-    new Player("Bob"),
-    new Player("Charlie"),
+    new Player(),
+    new Player(),
   ]);
 
   function handleStart() {
@@ -43,7 +43,7 @@
 </ul>
 <hr />
 <ul>
-  {#each game.players as player (player.name)}
+  {#each game.players as player (player.id)}
     <li>
       {#if player.id === game.getCurrentPlayer().id}
         ▶️<strong>{player.name}</strong>: ({PlayerStatus[player.status]})
@@ -53,6 +53,7 @@
       <Cards
         cards={player.cards}
         name={player.name}
+        hidden={player.isComputer}
         pickable={player.name === game.getNextPlayer()?.name}
         bind:picked
       />
