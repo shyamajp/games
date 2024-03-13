@@ -1,6 +1,5 @@
 import { Deck } from "./Deck";
 import { Player, PlayerStatus } from "./Player";
-import { reorderArray } from "./utils";
 
 export enum GameStatus {
   PLAYING,
@@ -33,15 +32,13 @@ export abstract class Game {
     this.status = GameStatus.OVER;
   }
 
-  abstract routine(): void;
+  protected abstract routine(): void;
 
   protected next(): void {
     this.turn++;
   }
 
-  abstract judgePlayer(player: Player): void;
-
-  abstract judgeGame(): void;
+  protected abstract judge(): void;
 
   protected distribute(): void {
     while (this.deck.cards.length > 0) {
@@ -52,35 +49,34 @@ export abstract class Game {
     this.turn = 0;
   }
 
-  getStatus(pretty: false): GameStatus;
-  getStatus(pretty: true): PrettyStatus;
-  getStatus(pretty: boolean = false) {
+  public getStatus(pretty: false): GameStatus;
+  public getStatus(pretty: true): PrettyStatus;
+  public getStatus(pretty: boolean = false) {
     if (pretty) return GameStatus[this.status];
     return this.status;
   }
 
-  getPlayers(status: PlayerStatus = PlayerStatus.IS_PLAYING): Player[] {
+  public getPlayers(status: PlayerStatus = PlayerStatus.IS_PLAYING): Player[] {
     const players = this.players.filter((player) => player.status === status);
-    const index = players.findIndex(
-      (p) => p.id === this.players[this.turn % this.players.length].id
-    );
-    return reorderArray(players, index);
+    return players;
   }
 
-  getCurrentPlayer(): Player {
-    let player = this.players[this.turn % this.players.length];
-    if (player.status !== PlayerStatus.IS_PLAYING) {
-      this.turn++;
-      return this.getNextPlayer();
+  public getCurrentPlayer(): Player {
+    let player;
+    for (let i = 0; i < this.players.length; i++) {
+      player = this.players[(this.turn + i) % this.players.length];
+      if (player.status !== PlayerStatus.HAS_WON) {
+        return player;
+      }
     }
-    return player;
+    throw new Error("No player is playing");
   }
 
-  getNextPlayer(): Player {
-    for (let i = 1; i < this.players.length; i++) {
-      const player = this.players[(this.turn + i) % this.players.length];
-      if (player.status === PlayerStatus.IS_PLAYING) return player;
-    }
-    return this.players[(this.turn + 1) % this.players.length];
+  public getNextPlayer(): Player | undefined {
+    const players = this.getPlayers();
+    if (players.length === 1) return undefined;
+    const currentPlayer = this.getCurrentPlayer();
+    const index = players.findIndex((p) => p.id === currentPlayer.id);
+    return players[(index + 1) % players.length];
   }
 }

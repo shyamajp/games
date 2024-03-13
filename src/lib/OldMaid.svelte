@@ -3,6 +3,7 @@
   import { Deck } from "../logic/Deck";
   import { OldMaid } from "../logic/OldMaid";
   import { Player, PlayerStatus } from "../logic/Player";
+  import { GameStatus } from "../logic/Game";
 
   let picked: number | undefined;
 
@@ -19,10 +20,12 @@
   }
 
   function handleNext() {
-    game.setInput(picked);
-    game.next();
-    game = game;
-    picked = undefined;
+    if (game.status === GameStatus.PLAYING) {
+      game.setInput(picked);
+      game.next();
+      game = game;
+      picked = undefined;
+    }
   }
 </script>
 
@@ -35,10 +38,7 @@
 <ul>
   <li>game: {game.getStatus(true)}</li>
   <li>
-    players: {game
-      .getPlayers()
-      .map((p) => p.name)
-      .join(" | ")}
+    players: {game.players.map((p) => p.name).join(" | ")}
   </li>
 </ul>
 <hr />
@@ -53,7 +53,7 @@
       <Cards
         cards={player.cards}
         name={player.name}
-        pickable={player.name === game.getNextPlayer().name}
+        pickable={player.name === game.getNextPlayer()?.name}
         bind:picked
       />
     </li>

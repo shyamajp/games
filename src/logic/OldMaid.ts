@@ -14,64 +14,79 @@ export class OldMaid extends Game {
   protected init() {
     this.distribute();
     for (let i = 0; i < this.players.length; i++) {
-      this.removePairs();
+      const currentPlayer = this.players[i];
+      this.removePairs(currentPlayer);
+      currentPlayer.sort();
       this.turn++;
     }
     this.turn = 0;
   }
 
-  routine(): void {
-    if (this.getCurrentPlayer().status !== PlayerStatus.IS_PLAYING) return;
+  protected routine(): void {
+    const currentPlayer = this.getCurrentPlayer();
     this.transferCard();
-    this.judgePlayer(this.getNextPlayer());
-    this.removePairs();
-    this.judgePlayer();
-    this.judgeGame();
+    currentPlayer.sort();
+    this.judge();
+    this.removePairs(currentPlayer);
+    this.judge();
   }
 
-  next(): void {
-    if (this.status === GameStatus.OVER) return;
+  public next(): void {
+    if (this.getCurrentPlayer().status !== PlayerStatus.IS_PLAYING) return;
     this.routine();
+    if (this.status === GameStatus.OVER) return;
     super.next();
   }
 
-  setInput(raw: number | undefined): void {
+  public setInput(raw: number | undefined): void {
     this.input = raw;
   }
 
-  judgePlayer(player: Player = this.getCurrentPlayer()): void {
-    if (player.cards.length === 0) player.status = PlayerStatus.HAS_WON;
+  private judgePlayers(): void {
+    const players = this.getPlayers();
+    players.forEach((player) => {
+      if (player.cards.length === 0) player.status = PlayerStatus.HAS_WON;
+    });
   }
 
-  judgeGame(): void {
-    if (this.getPlayers().length === 1) this.end();
+  private judgeGame(): void {
+    const players = this.getPlayers();
+    if (players.length === 1) {
+      players[0].status = PlayerStatus.HAS_LOST;
+      this.end();
+    }
   }
 
-  removePairs(): void {
-    const currentPlayer = this.getCurrentPlayer();
-    const cards = currentPlayer.cards.map((card) => new Card(card));
+  protected judge(): void {
+    this.judgePlayers();
+    this.judgeGame();
+  }
 
-    const skipIndex: number[] = [];
+  private removePairs(player: Player): void {
+    const cards = player.cards.map((card) => new Card(card));
+
+    const skipIndeces: number[] = [];
     const skipCards: number[] = [];
     for (let i = 0; i < cards.length; i++) {
       for (let j = i + 1; j < cards.length; j++) {
         if (
-          !skipIndex.includes(i) &&
-          !skipIndex.includes(j) &&
+          !skipIndeces.includes(i) &&
+          !skipIndeces.includes(j) &&
           cards[i].num === cards[j].num
         ) {
-          skipIndex.push(i, j);
+          skipIndeces.push(i, j);
           skipCards.push(cards[i].raw, cards[j].raw);
         }
       }
     }
-    skipCards.forEach((c) => currentPlayer.remove(c));
+    skipCards.forEach((c) => player.remove(c));
   }
 
-  transferCard(): void {
-    const currentPlayer = this.getCurrentPlayer();
-    const nextPlayer = this.getNextPlayer();
-    const card = this.input || nextPlayer.getRandomCard();
-    currentPlayer.add(nextPlayer.remove(card));
+  private transferCard(
+    picker: Player = this.getCurrentPlayer(),
+    holder: Player = this.getNextPlayer()!
+  ): void {
+    const card = this.input || holder.getRandomCard();
+    picker.add(holder.remove(card));
   }
 }

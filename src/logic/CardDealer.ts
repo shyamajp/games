@@ -23,7 +23,7 @@ export abstract class CardDealer {
     this.cards.sort(() => Math.random() - 0.5);
   }
 
-  protected sort(): void {
+  sort(): void {
     this.cards.sort((a, b) => a - b);
   }
 
