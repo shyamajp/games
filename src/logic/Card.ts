@@ -44,12 +44,13 @@ export class Card {
     return suite;
   }
 
-  getNumber(pretty: false): number | Extract<PrettyCard, "Joker">;
+  getNumber(pretty: false): number;
   getNumber(pretty: true): number | PrettyCard;
   getNumber(pretty: boolean = false) {
-    if (this.raw >= SpecialCard.Joker) return SpecialCard[SpecialCard.Joker];
-    let num: number | PrettyCard = (this.raw % 13) + 1;
-    if (pretty && num in SpecialCard) num = SpecialCard[num] as PrettyCard;
+    if (this.raw >= SpecialCard.Joker)
+      return pretty ? SpecialCard[SpecialCard.Joker] : 0;
+    const num = (this.raw % 13) + 1;
+    if (pretty && num in SpecialCard) return SpecialCard[num] as PrettyCard;
     return num;
   }
 
