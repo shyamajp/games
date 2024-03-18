@@ -2,9 +2,11 @@ import { Deck } from "./Deck";
 import { Player, PlayerStatus } from "./Player";
 
 export enum GameStatus {
+  UNSTARTED,
+  INITIALIZING,
   PLAYING,
   OVER,
-  INITIALIZING,
+  PAUSED,
 }
 type PrettyStatus = keyof typeof GameStatus;
 
@@ -18,31 +20,51 @@ export abstract class Game {
     this.deck = deck;
     this.players = players;
     this.turn = 0;
-    this.status = GameStatus.INITIALIZING;
-    this.init();
+    this.status = GameStatus.UNSTARTED;
   }
 
-  protected abstract init(): void;
-
-  start(): void {
+  public start(): void {
+    this.status = GameStatus.INITIALIZING;
+    this.init();
+    this.players.forEach((player) => player.init());
     this.status = GameStatus.PLAYING;
   }
 
-  protected end(): void {
+  public play(): void {
+    if (this.status === GameStatus.PLAYING) {
+      this.routine();
+    }
+  }
+
+  public end(): void {
+    this.cleanup();
     this.status = GameStatus.OVER;
   }
 
-  protected abstract routine(): void;
-
-  protected next(): void {
-    this.turn++;
+  public pause(): void {
+    this.status = GameStatus.PAUSED;
   }
 
+  public resume(): void {
+    this.status = GameStatus.PLAYING;
+  }
+
+  public restart(): void {
+    this.cleanup();
+    this.start();
+    this.status = GameStatus.PLAYING;
+  }
+
+  protected abstract init(): void;
+  protected abstract cleanup(): void;
+
+  protected abstract routine(): void;
   protected abstract judge(): void;
 
-  protected distribute(): void {
+  protected distribute(cards?: number): void {
     while (this.deck.cards.length > 0) {
       const currentPlayer = this.getCurrentPlayer();
+      if (cards !== undefined && currentPlayer.cards.length === cards) break;
       currentPlayer.add(this.deck.remove());
       this.turn++;
     }
@@ -56,20 +78,21 @@ export abstract class Game {
     return this.status;
   }
 
-  public getPlayers(status: PlayerStatus = PlayerStatus.IS_PLAYING): Player[] {
+  public getPlayers(status: PlayerStatus = PlayerStatus.PLAYING): Player[] {
     const players = this.players.filter((player) => player.status === status);
     return players;
   }
 
   public getCurrentPlayer(): Player {
-    let player;
-    for (let i = 0; i < this.players.length; i++) {
-      player = this.players[(this.turn + i) % this.players.length];
-      if (player.status !== PlayerStatus.HAS_WON) {
-        return player;
-      }
-    }
-    throw new Error("No player is playing");
+    return this.players[this.turn % this.players.length];
+    // let player;
+    // for (let i = 0; i < this.players.length; i++) {
+    //   player = this.players[(this.turn + i) % this.players.length];
+    //   if (player.status !== PlayerStatus.HAS_WON) {
+    //     return player;
+    //   }
+    // }
+    // throw new Error("No player is playing");
   }
 
   public getNextPlayer(): Player | undefined {

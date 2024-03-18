@@ -1,39 +1,51 @@
 <script lang="ts">
-  import Cards from "./Cards.svelte";
+  import Card from "./Card.svelte";
   import { Deck } from "../logic/Deck";
   import { OldMaid } from "../logic/OldMaid";
   import { Player, PlayerStatus } from "../logic/Player";
   import { GameStatus } from "../logic/Game";
 
-  let picked: number | undefined;
-
   const deck = new Deck(1);
   let game = new OldMaid(deck, [
     new Player("Alice"),
-    new Player(),
-    new Player(),
+    new Player("Bob"),
+    new Player("Charlie"),
   ]);
 
-  function handleStart() {
-    game.start();
+  function handleStatus() {
+    if (game.status === GameStatus.UNSTARTED) {
+      game.start();
+    } else if (game.status === GameStatus.PLAYING) {
+      game.pause();
+    } else if (game.status === GameStatus.PAUSED) {
+      game.resume();
+    } else if (game.status === GameStatus.OVER) {
+      game.restart();
+    }
     game = game;
   }
 
   function handleNext() {
-    if (game.status === GameStatus.PLAYING) {
-      game.setInput(picked);
-      game.next();
-      game = game;
-      picked = undefined;
-    }
+    game.play();
+    game = game;
   }
 </script>
 
-<button on:click={handleNext}>
+<button on:click={handleNext} disabled={game.status !== GameStatus.PLAYING}>
   turn: {game.turn}
 </button>
 
-<button on:click={handleStart}>Start</button>
+<button on:click={handleStatus}>
+  {#if game.status === GameStatus.UNSTARTED}
+    Start
+  {:else if game.status === GameStatus.PLAYING}
+    Pause
+  {:else if game.status === GameStatus.PAUSED}
+    Resume
+  {:else if game.status === GameStatus.OVER}
+    Restart
+  {/if}
+</button>
 
 <ul>
   <li>game: {game.getStatus(true)}</li>
@@ -42,21 +54,23 @@
   </li>
 </ul>
 <hr />
-<ul>
-  {#each game.players as player (player.id)}
-    <li>
-      {#if player.id === game.getCurrentPlayer().id}
-        ▶️<strong>{player.name}</strong>: ({PlayerStatus[player.status]})
-      {:else}
-        {player.name}: ({PlayerStatus[player.status]})
-      {/if}
-      <Cards
-        cards={player.cards}
-        name={player.name}
-        hidden={player.isComputer}
-        pickable={player.name === game.getNextPlayer()?.name}
-        bind:picked
-      />
-    </li>
+
+<h3>Players</h3>
+
+{#each game.players as player (player.id)}
+  <div>
+    {#if player.id === game.getCurrentPlayer().id}
+      ▶️<strong>{player.name}</strong>: ({PlayerStatus[player.status]})
+    {:else}
+      {player.name}: ({PlayerStatus[player.status]})
+    {/if}
+  </div>
+  {#each player.cards as raw (raw)}
+    <Card {raw} hidden={false} />
   {/each}
-</ul>
+{/each}
+
+<h3>Deck</h3>
+{#each game.deck.cards as raw (raw)}
+  <Card {raw} hidden={false} />
+{/each}

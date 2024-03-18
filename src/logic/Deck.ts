@@ -21,6 +21,4 @@ export class Deck extends CardDealer {
     }
     return super.add(card);
   }
-
-  routine(): void {}
 }

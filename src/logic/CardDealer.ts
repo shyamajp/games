@@ -58,6 +58,4 @@ export abstract class CardDealer {
     if (this.cards.length === 0) throw new NoCardsLeftError();
     return this.cards.pop()!;
   }
-
-  abstract routine(): void;
 }
