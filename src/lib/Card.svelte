@@ -2,26 +2,19 @@
   import { Card } from "../logic/Card";
   export let raw: number;
   export let hidden: boolean;
+  export let name: string;
+  export let disabled: boolean;
 
   const card = new Card(raw);
   const content = card.display();
   const color = card.getColor();
+
+  function handleCheck() {}
 </script>
 
-<div class="card" style="color:{color}">
-  {!hidden ? content : ""}
-</div>
-
-<style>
-  .card {
-    display: inline-block;
-    width: 60px;
-    height: 100px;
-    margin-right: 10px;
-    border: 1px solid black;
-    border-radius: 5px;
-    text-align: center;
-    line-height: 100px;
-    font-size: 20px;
-  }
-</style>
+<label class="card">
+  <input {name} type="radio" {disabled} value={raw} on:click={handleCheck} />
+  <span class="content {color}">
+    {!hidden ? content : ""}
+  </span>
+</label>

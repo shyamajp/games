@@ -26,6 +26,7 @@ export class OldMaid extends Game {
       while (this.getCurrentPlayer().status !== PlayerStatus.PLAYING) {
         this.turn++;
       }
+      console.log(this.turn, this.getCurrentPlayer().name);
       this.routine();
       this.turn++;
     }
