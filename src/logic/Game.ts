@@ -85,14 +85,6 @@ export abstract class Game {
 
   public getCurrentPlayer(): Player {
     return this.players[this.turn % this.players.length];
-    // let player;
-    // for (let i = 0; i < this.players.length; i++) {
-    //   player = this.players[(this.turn + i) % this.players.length];
-    //   if (player.status !== PlayerStatus.HAS_WON) {
-    //     return player;
-    //   }
-    // }
-    // throw new Error("No player is playing");
   }
 
   public getNextPlayer(): Player | undefined {

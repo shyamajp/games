@@ -1,3 +1,4 @@
+import { Card } from "./Card";
 import { Game, GameStatus } from "./Game";
 import { PlayerStatus } from "./Player";
 
@@ -5,8 +6,7 @@ export class OldMaid extends Game {
   protected init() {
     this.distribute();
     for (let i = 0; i < this.players.length; i++) {
-      const currentPlayer = this.players[i];
-      currentPlayer.removePairs().forEach((c) => this.deck.add(c));
+      this.removePairs();
       this.turn++;
     }
     this.turn = 0;
@@ -15,10 +15,9 @@ export class OldMaid extends Game {
   protected cleanup() {}
 
   protected routine(): void {
-    const currentPlayer = this.getCurrentPlayer();
     this.transferCard();
     this.judge();
-    currentPlayer.removePairs().forEach((c) => this.deck.add(c));
+    this.removePairs();
     this.judge();
   }
 
@@ -50,6 +49,25 @@ export class OldMaid extends Game {
   protected judge(): void {
     this.judgePlayers();
     this.judgeGame();
+  }
+
+  // TODO: refactor this method
+  private removePairs(): void {
+    const currentPlayer = this.getCurrentPlayer();
+    // TODO: fix dependency on Card
+    const cards = currentPlayer.cards.map((card) => new Card(card));
+    const skipIndeces: number[] = [];
+    const skipCards: number[] = [];
+    for (let i = 0; i < cards.length; i++) {
+      for (let j = i + 1; j < cards.length; j++) {
+        if (!skipIndeces.includes(i) && cards[i].num === cards[j].num) {
+          skipIndeces.push(i, j);
+          skipCards.push(cards[i].raw, cards[j].raw);
+        }
+      }
+    }
+
+    skipCards.forEach((card) => this.deck.add(currentPlayer.remove(card)));
   }
 
   private transferCard(): void {
