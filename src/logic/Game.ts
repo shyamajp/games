@@ -36,6 +36,10 @@ export abstract class Game {
     }
   }
 
+  public next(): void {
+    this.turn++;
+  }
+
   public end(): void {
     this.cleanup();
     this.status = GameStatus.OVER;

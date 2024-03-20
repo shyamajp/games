@@ -10,7 +10,6 @@
     new Player("Alice"),
     new Player("Bob"),
     new Player("Charlie"),
-    new Player("David"),
   ]);
 
   function handleStatus() {
@@ -31,12 +30,19 @@
     game = game;
   }
 
-  $: console.log(game.turn, game.getCurrentPlayer().name);
+  function handleNext() {
+    game.next();
+    game = game;
+  }
 </script>
 
 <section id="old-maid">
   <button on:click={handlePlay} disabled={game.status !== GameStatus.PLAYING}>
     turn: {game.turn}
+  </button>
+
+  <button on:click={handleNext} disabled={game.status !== GameStatus.PLAYING}>
+    next
   </button>
 
   <button on:click={handleStatus}>
