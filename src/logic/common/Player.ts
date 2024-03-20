@@ -5,6 +5,7 @@ export enum PlayerStatus {
   PLAYING,
   WON,
   LOST,
+  DRAW,
 }
 
 export class Player extends CardDealer {
