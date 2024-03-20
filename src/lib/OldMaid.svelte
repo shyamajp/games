@@ -34,6 +34,11 @@
     game.next();
     game = game;
   }
+
+  function handleInput(e: any) {
+    game.setInput(+e.target.value);
+    game = game;
+  }
 </script>
 
 <section id="old-maid">
@@ -76,12 +81,17 @@
       {/if}
     </div>
     {#each player.cards as raw (raw)}
-      <Card name={player.name} {raw} hidden={false} disabled={false} />
+      <Card
+        name={player.name}
+        {raw}
+        disabled={player.id !== game.getNextPlayer()?.id}
+        {handleInput}
+      />
     {/each}
   {/each}
 
   <h3>Deck</h3>
   {#each game.deck.cards as raw (raw)}
-    <Card name="deck" {raw} hidden={false} disabled />
+    <Card name="deck" {raw} disabled />
   {/each}
 </section>

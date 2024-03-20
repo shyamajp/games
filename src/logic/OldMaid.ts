@@ -3,6 +3,8 @@ import { Game, GameStatus } from "./Game";
 import { PlayerStatus } from "./Player";
 
 export class OldMaid extends Game {
+  input: number | undefined;
+
   protected init() {
     this.distribute();
     for (let i = 0; i < this.players.length; i++) {
@@ -10,12 +12,20 @@ export class OldMaid extends Game {
       this.turn++;
     }
     this.turn = 0;
+    this.input = undefined;
   }
 
-  protected cleanup() {}
+  setInput(raw: number | undefined): void {
+    this.input = raw;
+  }
+
+  protected cleanup() {
+    this.setInput(undefined);
+  }
 
   protected routine(): void {
     this.transferCard();
+    this.cleanup();
     this.judge();
     this.removePairs();
     this.judge();
@@ -72,7 +82,7 @@ export class OldMaid extends Game {
   private transferCard(): void {
     const currentPlayer = this.getCurrentPlayer();
     const nextPlayer = this.getNextPlayer()!;
-    const card: number = currentPlayer.input || nextPlayer.getRandomCard();
+    const card: number = this.input || nextPlayer.getRandomCard();
     currentPlayer.add(nextPlayer.remove(card));
   }
 }
