@@ -1,9 +1,9 @@
 <script lang="ts">
-  import Card from "./Card.svelte";
-  import { Deck } from "../logic/Deck";
-  import { OldMaid } from "../logic/OldMaid";
-  import { Player, PlayerStatus } from "../logic/Player";
-  import { GameStatus } from "../logic/Game";
+  import Card from "../common/Card.svelte";
+  import { Deck } from "../../logic/common/Deck";
+  import { OldMaid } from "../../logic/old_maid/OldMaid";
+  import { Player, PlayerStatus } from "../../logic/common/Player";
+  import { GameStatus } from "../../logic/common/Game";
 
   const deck = new Deck(1);
   let game = new OldMaid(deck, [
@@ -42,6 +42,8 @@
 </script>
 
 <section id="old-maid">
+  <h1>Old Maid</h1>
+
   <button on:click={handlePlay} disabled={game.status !== GameStatus.PLAYING}>
     turn: {game.turn}
   </button>

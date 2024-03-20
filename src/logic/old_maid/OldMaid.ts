@@ -1,6 +1,6 @@
-import { Card } from "./Card";
-import { Game, GameStatus } from "./Game";
-import { PlayerStatus } from "./Player";
+import { Card } from "../common/Card";
+import { Game, GameStatus } from "../common/Game";
+import { PlayerStatus } from "../common/Player";
 
 export class OldMaid extends Game {
   input: number | undefined;

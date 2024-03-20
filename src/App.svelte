@@ -1,10 +1,32 @@
 <script lang="ts">
-  import OldMaid from "./lib/OldMaid.svelte";
+  import { games } from "./constants";
+
+  let Game: any;
+
+  function handleGame(e: any) {
+    const game = games.find((game) => game.id === e.target.value);
+    if (game) {
+      import(`./lib/${game.id}/${game.componentName}.svelte`).then((module) => {
+        Game = module.default;
+      });
+    }
+  }
 </script>
 
 <main>
-  <h1>Old Maid</h1>
-  <OldMaid />
+  <header>
+    {#each games as game (game.id)}
+      <input
+        type="radio"
+        id={game.id}
+        name="game"
+        value={game.id}
+        on:change={handleGame}
+      />
+      <label for={game.id}>{game.name}</label><br />
+    {/each}
+  </header>
+  <svelte:component this={Game} />
 </main>
 
 <style>

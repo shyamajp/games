@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { Card } from "../logic/Card";
+  import { Card } from "../../logic/common/Card";
   export let raw: number;
   export let name: string;
   export let hidden: boolean = false;
