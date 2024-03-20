@@ -38,14 +38,15 @@ export abstract class CardDealer {
     if (this.cards.length === 0) throw new NoCardsLeftError();
     if (card !== undefined) {
       const index = this.getCardIndex(card);
-      return this.cards.splice(index, 1)[0];
+      this.cards.splice(index, 1);
+      return card;
     }
     return this.getLastCard();
   }
 
   protected getCardIndex(card: number): number {
     const index = this.cards.indexOf(card);
-    if (index < -1) throw new CardDoesNotExistError();
+    if (index < 0) throw new CardDoesNotExistError();
     return index;
   }
 
