@@ -44,15 +44,23 @@
 <section id="old-maid">
   <h1>Old Maid</h1>
 
-  <button on:click={handlePlay} disabled={game.status !== GameStatus.PLAYING}>
+  <button
+    disabled={game.status !== GameStatus.PLAYING}
+    type="button"
+    on:click={handlePlay}
+  >
     turn: {game.turn}
   </button>
 
-  <button on:click={handleNext} disabled={game.status !== GameStatus.PLAYING}>
+  <button
+    disabled={game.status !== GameStatus.PLAYING}
+    type="button"
+    on:click={handleNext}
+  >
     next
   </button>
 
-  <button on:click={handleStatus}>
+  <button type="button" on:click={handleStatus}>
     {#if game.status === GameStatus.UNSTARTED}
       Start
     {:else if game.status === GameStatus.PLAYING}
@@ -85,15 +93,15 @@
     {#each player.cards as raw (raw)}
       <Card
         name={player.name}
-        {raw}
         disabled={player.id !== game.getNextPlayer()?.id}
         {handleInput}
+        {raw}
       />
     {/each}
   {/each}
 
   <h3>Deck</h3>
   {#each game.deck.cards as raw (raw)}
-    <Card name="deck" {raw} disabled />
+    <Card name="deck" disabled {raw} />
   {/each}
 </section>

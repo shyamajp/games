@@ -12,7 +12,7 @@
 </script>
 
 <label class="card">
-  <input {name} type="radio" {disabled} value={raw} on:click={handleInput} />
+  <input {name} {disabled} type="radio" value={raw} on:click={handleInput} />
   <span class="content {color}">
     {!hidden ? content : ""}
   </span>

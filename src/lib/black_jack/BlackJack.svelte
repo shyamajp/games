@@ -40,22 +40,31 @@
 <section id="black-jack">
   <h1>BlackJack</h1>
 
-  <button on:click={handlePlay} disabled={game.status !== GameStatus.PLAYING}>
+  <button
+    disabled={game.status !== GameStatus.PLAYING}
+    type="button"
+    on:click={handlePlay}
+  >
     Hit
   </button>
 
-  <button on:click={handleNext} disabled={game.status !== GameStatus.PLAYING}>
+  <button
+    disabled={game.status !== GameStatus.PLAYING}
+    type="button"
+    on:click={handleNext}
+  >
     Stand
   </button>
 
   <button
-    on:click={handleChallenge}
     disabled={game.status !== GameStatus.PLAYING}
+    type="button"
+    on:click={handleChallenge}
   >
     Challenge
   </button>
 
-  <button on:click={handleStatus}>
+  <button type="button" on:click={handleStatus}>
     {#if game.status === GameStatus.UNSTARTED}
       Start
     {:else if game.status === GameStatus.PLAYING}
@@ -86,12 +95,12 @@
       {/if}
     </div>
     {#each player.cards as raw (raw)}
-      <Card name={player.name} {raw} disabled />
+      <Card name={player.name} disabled {raw} />
     {/each}
   {/each}
 
   <h3>Deck</h3>
   {#each game.deck.cards as raw (raw)}
-    <Card name="deck" {raw} disabled />
+    <Card name="deck" disabled {raw} />
   {/each}
 </section>

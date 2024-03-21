@@ -17,9 +17,9 @@
   <header>
     {#each games as game (game.id)}
       <input
-        type="radio"
         id={game.id}
         name="game"
+        type="radio"
         value={game.id}
         on:change={handleGame}
       />
