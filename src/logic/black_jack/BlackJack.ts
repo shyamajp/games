@@ -54,7 +54,6 @@ export class BlackJack extends Game {
     } else if (sum === 21) {
       player.status = PlayerStatus.WON;
     }
-    console.log();
   }
 
   protected judge(): void {

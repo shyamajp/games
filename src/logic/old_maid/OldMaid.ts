@@ -28,7 +28,6 @@ export class OldMaid extends Game {
   }
 
   protected routine(): void {
-    console.log(this.input);
     this.transferCard();
     this.cleanup();
     this.judge();

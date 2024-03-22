@@ -47,7 +47,6 @@ export abstract class CardDealer {
 
   protected getCardIndex(card: Card): number {
     const index = this.cards.map((card) => card.raw).indexOf(card.raw);
-    console.log(card, index);
     if (index < 0) throw new CardDoesNotExistError();
     return index;
   }
