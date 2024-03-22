@@ -24,15 +24,23 @@ enum SpecialCard {
 type PrettySuite = keyof typeof SuiteSymbol;
 type PrettyCard = keyof typeof SpecialCard;
 
+enum AccessLevel {
+  NONE,
+  SELF,
+  ALL,
+}
+
 export class Card {
   readonly raw;
   readonly suite;
   readonly num;
+  accesslevel: AccessLevel;
 
   constructor(raw: number) {
     this.raw = raw;
     this.suite = this.getSuite(false);
     this.num = this.getNumber(false);
+    this.accesslevel = AccessLevel.NONE;
   }
 
   getSuite(pretty: false): Suite | undefined;
