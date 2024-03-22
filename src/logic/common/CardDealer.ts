@@ -6,9 +6,10 @@ import {
   IllegalCardError,
   NoCardsLeftError,
 } from "./Error";
+import { Card } from "./Card";
 
 export abstract class CardDealer {
-  cards: number[];
+  cards: Card[];
   id: string;
 
   constructor() {
@@ -24,17 +25,17 @@ export abstract class CardDealer {
   }
 
   sort(): void {
-    this.cards.sort((a, b) => a - b);
+    this.cards.sort((a, b) => a.raw - b.raw);
   }
 
-  add(card: number): number {
+  add(card: Card): Card {
     if (this.cards.includes(card)) throw new CardAlreadyExistsError();
-    if (card < 0) throw new IllegalCardError();
+    if (card.raw < 0) throw new IllegalCardError();
     this.cards.push(card);
     return card;
   }
 
-  remove(card?: number): number {
+  remove(card?: Card): Card {
     if (this.cards.length === 0) throw new NoCardsLeftError();
     if (card !== undefined) {
       const index = this.getCardIndex(card);
@@ -44,18 +45,19 @@ export abstract class CardDealer {
     return this.getLastCard();
   }
 
-  protected getCardIndex(card: number): number {
-    const index = this.cards.indexOf(card);
+  protected getCardIndex(card: Card): number {
+    const index = this.cards.map((card) => card.raw).indexOf(card.raw);
+    console.log(card, index);
     if (index < 0) throw new CardDoesNotExistError();
     return index;
   }
 
-  getRandomCard(): number {
+  getRandomCard(): Card {
     if (this.cards.length === 0) throw new NoCardsLeftError();
     return getRandomElement(this.cards);
   }
 
-  protected getLastCard(): number {
+  protected getLastCard(): Card {
     if (this.cards.length === 0) throw new NoCardsLeftError();
     return this.cards.pop()!;
   }

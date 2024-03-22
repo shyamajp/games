@@ -94,13 +94,13 @@
         {player.name}: ({PlayerStatus[player.status]})
       {/if}
     </div>
-    {#each player.cards as raw (raw)}
-      <Card name={player.name} disabled {raw} />
+    {#each player.cards as card (card.raw)}
+      <Card name={player.name} disabled raw={card.raw} />
     {/each}
   {/each}
 
   <h3>Deck</h3>
-  {#each game.deck.cards as raw (raw)}
-    <Card name="deck" disabled {raw} />
+  {#each game.deck.cards as card (card.raw)}
+    <Card name="deck" disabled raw={card.raw} />
   {/each}
 </section>

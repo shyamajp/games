@@ -39,8 +39,8 @@ export class BlackJack extends Game {
     this.judge();
   }
 
-  private calculateScore(hands: number[]) {
-    const cards = hands.map((c: number) => new Card(c));
+  private calculateScore(hands: Card[]) {
+    const cards = hands;
     return cards.reduce((acc, card) => {
       const score = Math.min(card.getNumber(false), 10);
       return acc + score;
