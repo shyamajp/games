@@ -28,7 +28,8 @@ export abstract class CardDealer {
   }
 
   add(card: Card): Card {
-    if (this.cards.includes(card)) throw new CardAlreadyExistsError();
+    if (this.cards.map((card) => card.raw).includes(card.raw))
+      throw new CardAlreadyExistsError();
     this.cards.push(card);
     return card;
   }
@@ -44,6 +45,7 @@ export abstract class CardDealer {
   }
 
   protected getCardIndex(card: Card): number {
+    if (this.cards.length === 0) throw new NoCardsLeftError();
     const index = this.cards.map((card) => card.raw).indexOf(card.raw);
     if (index < 0) throw new CardDoesNotExistError();
     return index;
