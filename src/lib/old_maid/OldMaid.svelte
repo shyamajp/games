@@ -5,7 +5,7 @@
   import { Player, PlayerStatus } from "../../logic/common/Player";
   import { GameStatus } from "../../logic/common/Game";
 
-  const deck = new Deck(1);
+  const deck = new Deck(53);
   let game = new OldMaid(deck, [
     new Player("Alice"),
     new Player("Bob"),

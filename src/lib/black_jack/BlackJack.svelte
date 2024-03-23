@@ -5,7 +5,7 @@
   import { Player, PlayerStatus } from "../../logic/common/Player";
   import { GameStatus } from "../../logic/common/Game";
 
-  const deck = new Deck(0);
+  const deck = new Deck(52);
   let game = new BlackJack(deck, [new Player("Alice"), new Player("Bob")]);
 
   function handleStatus() {

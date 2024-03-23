@@ -5,9 +5,9 @@ import { IllegalCardError } from "./Error";
 export class Deck extends CardDealer {
   private cardCount: number;
 
-  constructor(jokerCount: number = 2) {
+  constructor(cardCount: number = 54) {
     super();
-    this.cardCount = 52 + jokerCount;
+    this.cardCount = cardCount;
     this.init();
   }
 
