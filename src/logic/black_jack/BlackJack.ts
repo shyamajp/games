@@ -27,14 +27,14 @@ export class BlackJack extends Game {
   protected routine(): void {
     const currentPlayer = this.getCurrentPlayer();
     if (currentPlayer.status === PlayerStatus.PLAYING) {
-      currentPlayer.add(this.deck.remove());
+      this.transfer(this.deck, currentPlayer);
       this.judgePlayer(currentPlayer);
     }
   }
 
   public challenge(): void {
     while (this.calculateScore(this.dealer.cards) < 17) {
-      this.dealer.add(this.deck.remove());
+      this.transfer(this.deck, this.dealer);
     }
     this.judge();
   }

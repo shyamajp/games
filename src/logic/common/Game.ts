@@ -1,3 +1,5 @@
+import { Card } from "./Card";
+import { CardDealer } from "./CardDealer";
 import { Deck } from "./Deck";
 import { Player, PlayerStatus } from "./Player";
 
@@ -70,10 +72,14 @@ export abstract class Game {
       const currentPlayer = this.getCurrentPlayer();
       if (cardCount !== undefined && currentPlayer.cards.length === cardCount)
         break;
-      currentPlayer.add(this.deck.remove());
+      this.transfer(this.deck, currentPlayer);
       this.turn++;
     }
     this.turn = 0;
+  }
+
+  protected transfer(from: CardDealer, to: CardDealer, card?: Card): void {
+    to.add(from.remove(card));
   }
 
   public getStatus(pretty: false): GameStatus;

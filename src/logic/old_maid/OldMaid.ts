@@ -85,13 +85,13 @@ export class OldMaid extends Game {
       }
     }
 
-    skipCards.forEach((card) => this.deck.add(currentPlayer.remove(card)));
+    skipCards.forEach((card) => this.transfer(currentPlayer, this.deck, card));
   }
 
   private transferCard(): void {
     const currentPlayer = this.getCurrentPlayer();
     const nextPlayer = this.getNextPlayer()!;
     const card: Card = this.input || nextPlayer.getRandomCard();
-    currentPlayer.add(nextPlayer.remove(card));
+    this.transfer(nextPlayer, currentPlayer, card);
   }
 }
