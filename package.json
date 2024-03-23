@@ -13,6 +13,7 @@
     "check": "svelte-check --tsconfig ./tsconfig.json",
     "format": "npx prettier --write .",
     "test": "vitest",
+    "test:run": "vitest run",
     "lint": "eslint",
     "lint:fix": "eslint --fix"
   },
