@@ -11,13 +11,11 @@ export enum PlayerStatus {
 export class Player extends CardDealer {
   readonly name: string;
   status: PlayerStatus;
-  readonly isComputer: boolean;
   input: any;
 
-  constructor(name?: string) {
+  constructor(name: string) {
     super();
-    this.name = name || "Computer";
-    this.isComputer = !name;
+    this.name = name;
     this.status = PlayerStatus.UNSTARTED;
   }
 
