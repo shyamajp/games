@@ -19,5 +19,12 @@
     "noUnusedParameters": true,
     "noFallthroughCasesInSwitch": true
   },
-  "include": ["src/**/*.ts", "src/**/*.js", "src/**/*.svelte", "vite.config.ts"]
+  "include": [
+    "src/**/*.ts",
+    "src/**/*.js",
+    "src/**/*.svelte",
+    "vite.config.ts",
+    ".eslintrc.cjs",
+    ".prettierrc.cjs"
+  ]
 }
