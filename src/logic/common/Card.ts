@@ -13,7 +13,7 @@ enum SuiteSymbol {
   "♠",
 }
 
-enum SpecialCard {
+enum PictureCard {
   A = 1,
   J = 11,
   Q = 12,
@@ -22,7 +22,7 @@ enum SpecialCard {
 }
 
 type PrettySuite = keyof typeof SuiteSymbol;
-type PrettyCard = keyof typeof SpecialCard;
+type PrettyCard = keyof typeof PictureCard;
 
 enum AccessLevel {
   NONE,
@@ -33,13 +33,13 @@ enum AccessLevel {
 export class Card {
   readonly raw;
   readonly suite;
-  readonly num;
+  readonly rank;
   accesslevel: AccessLevel;
 
   constructor(raw: number) {
     this.raw = raw;
     this.suite = this.getSuite(false);
-    this.num = this.getNumber(false);
+    this.rank = this.getRank(false);
     this.accesslevel = AccessLevel.NONE;
   }
 
@@ -52,14 +52,14 @@ export class Card {
     return suite;
   }
 
-  getNumber(pretty: false): number;
-  getNumber(pretty: true): number | PrettyCard;
-  getNumber(pretty: boolean = false) {
-    if (this.raw >= SpecialCard.Joker)
-      return pretty ? SpecialCard[SpecialCard.Joker] : 0;
-    const num = (this.raw % 13) + 1;
-    if (pretty && num in SpecialCard) return SpecialCard[num] as PrettyCard;
-    return num;
+  getRank(pretty: false): number;
+  getRank(pretty: true): number | PrettyCard;
+  getRank(pretty: boolean = false) {
+    if (this.raw >= PictureCard.Joker)
+      return pretty ? PictureCard[PictureCard.Joker] : 0;
+    const rank = (this.raw % 13) + 1;
+    if (pretty && rank in PictureCard) return PictureCard[rank] as PrettyCard;
+    return rank;
   }
 
   getColor(): string {
@@ -69,8 +69,8 @@ export class Card {
   }
 
   display() {
-    const num = this.getNumber(true);
+    const rank = this.getRank(true);
     const suite = this.getSuite(true) ?? "";
-    return `${suite}${num}`;
+    return `${suite}${rank}`;
   }
 }

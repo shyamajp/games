@@ -65,10 +65,11 @@ export abstract class Game {
   protected abstract routine(): void;
   protected abstract judge(): void;
 
-  protected distribute(cards?: number): void {
+  protected distribute(cardCount?: number): void {
     while (this.deck.cards.length > 0) {
       const currentPlayer = this.getCurrentPlayer();
-      if (cards !== undefined && currentPlayer.cards.length === cards) break;
+      if (cardCount !== undefined && currentPlayer.cards.length === cardCount)
+        break;
       currentPlayer.add(this.deck.remove());
       this.turn++;
     }

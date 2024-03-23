@@ -42,7 +42,7 @@ export class BlackJack extends Game {
   private calculateScore(hands: Card[]) {
     const cards = hands;
     return cards.reduce((acc, card) => {
-      const score = Math.min(card.getNumber(false), 10);
+      const score = Math.min(card.getRank(false), 10);
       return acc + score;
     }, 0);
   }

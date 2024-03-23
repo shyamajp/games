@@ -78,7 +78,7 @@ export class OldMaid extends Game {
     const skipCards: Card[] = [];
     for (let i = 0; i < cards.length; i++) {
       for (let j = i + 1; j < cards.length; j++) {
-        if (!skipIndeces.includes(i) && cards[i].num === cards[j].num) {
+        if (!skipIndeces.includes(i) && cards[i].rank === cards[j].rank) {
           skipIndeces.push(i, j);
           skipCards.push(cards[i], cards[j]);
         }
