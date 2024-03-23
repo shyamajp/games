@@ -3,7 +3,6 @@ import { getRandomElement } from "./utils";
 import {
   CardAlreadyExistsError,
   CardDoesNotExistError,
-  IllegalCardError,
   NoCardsLeftError,
 } from "./Error";
 import { Card } from "./Card";
@@ -30,7 +29,6 @@ export abstract class CardDealer {
 
   add(card: Card): Card {
     if (this.cards.includes(card)) throw new CardAlreadyExistsError();
-    if (card.raw < 0) throw new IllegalCardError();
     this.cards.push(card);
     return card;
   }
