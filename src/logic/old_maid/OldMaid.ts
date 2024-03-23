@@ -16,11 +16,7 @@ export class OldMaid extends Game {
   }
 
   setInput(raw: number | undefined): void {
-    if (raw === undefined) {
-      this.input = undefined;
-      return;
-    }
-    this.input = new Card(raw!);
+    this.input = raw === undefined ? raw : new Card(raw);
   }
 
   protected cleanup() {
@@ -36,17 +32,10 @@ export class OldMaid extends Game {
   }
 
   public next(): void {
-    this.input = undefined;
-    super.next();
-  }
-
-  public play(): void {
-    if (this.status === GameStatus.PLAYING) {
-      while (this.getCurrentPlayer().status !== PlayerStatus.PLAYING) {
-        this.next();
-      }
-      this.routine();
-    }
+    // skip players who have won
+    do {
+      super.next();
+    } while (this.getCurrentPlayer().status === PlayerStatus.WON);
   }
 
   private judgePlayers(): void {

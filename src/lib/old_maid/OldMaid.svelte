@@ -27,10 +27,6 @@
 
   function handlePlay() {
     game.play();
-    game = game;
-  }
-
-  function handleNext() {
     game.next();
     game = game;
   }
@@ -49,15 +45,7 @@
     type="button"
     on:click={handlePlay}
   >
-    turn: {game.turn}
-  </button>
-
-  <button
-    disabled={game.status !== GameStatus.PLAYING}
-    type="button"
-    on:click={handleNext}
-  >
-    next
+    Play
   </button>
 
   <button type="button" on:click={handleStatus}>
