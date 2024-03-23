@@ -12,20 +12,32 @@ describe("Card", () => {
   });
 
   test.each([
-    ["numerical", 0, AccessLevel.NONE, Suit.CLUBS, 1, Color.BLACK, "♣A"],
-    ["picture", 20, AccessLevel.NONE, Suit.DIAMONDS, 8, Color.RED, "♦8"],
-    ["Joker", 53, AccessLevel.NONE, undefined, 0, Color.BLACK, "Joker"],
+    ["numerical", 0, Suit.CLUBS, 1, Color.BLACK, "♣A"],
+    ["picture", 20, Suit.DIAMONDS, 8, Color.RED, "♦8"],
+    ["Joker", 53, undefined, 0, Color.BLACK, "Joker"],
   ])(
     "should get all attributes for a %s card",
-    (_case, raw, accessLevel, suit, rank, color, content) => {
+    (_case, raw, suit, rank, color, content) => {
       const card = new Card(raw);
-
       expect(card.raw).toEqual(raw);
-      expect(card.accessLevel).toEqual(accessLevel);
+      expect(card.accessLevel).toEqual(AccessLevel.NONE);
+      expect(card.disabled).toEqual(false);
       expect(card.suit).toEqual(suit);
       expect(card.rank).toEqual(rank);
       expect(card.color).toEqual(color);
       expect(card.content).toEqual(content);
     },
   );
+
+  test("should modify access level", () => {
+    const card = new Card(0);
+    card.accessLevel = AccessLevel.SELF;
+    expect(card.accessLevel).toEqual(AccessLevel.SELF);
+  });
+
+  test("should modify disabled", () => {
+    const card = new Card(0);
+    card.disabled = true;
+    expect(card.disabled).toEqual(true);
+  });
 });

@@ -35,14 +35,16 @@ export enum AccessLevel {
 
 export class Card {
   readonly raw: number;
-  accessLevel: AccessLevel;
+  private _accessLevel: AccessLevel;
+  private _disabled: boolean;
 
   constructor(raw: number) {
     if (!(raw >= 0)) {
       throw new IllegalCardError();
     }
     this.raw = raw;
-    this.accessLevel = AccessLevel.NONE;
+    this._accessLevel = AccessLevel.NONE;
+    this._disabled = false;
   }
 
   get suit(): Suit | undefined {
@@ -66,5 +68,21 @@ export class Card {
     const suit = SuitSymbol[this.suit!];
     const rank = this.rank in PictureCard ? PictureCard[this.rank] : this.rank;
     return `${suit}${rank}`;
+  }
+
+  get accessLevel(): AccessLevel {
+    return this._accessLevel;
+  }
+
+  set accessLevel(accessLevel: AccessLevel) {
+    this._accessLevel = accessLevel;
+  }
+
+  get disabled(): boolean {
+    return this._disabled;
+  }
+
+  set disabled(disabled: boolean) {
+    this._disabled = disabled;
   }
 }
