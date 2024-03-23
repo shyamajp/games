@@ -1,11 +1,11 @@
 import { IllegalCardError } from "./Error";
 
-enum Color {
+export enum Color {
   RED = "red",
   BLACK = "black",
 }
 
-enum Suit {
+export enum Suit {
   CLUBS,
   DIAMONDS,
   HEARTS,
@@ -27,7 +27,7 @@ enum PictureCard {
   Joker = 52,
 }
 
-enum AccessLevel {
+export enum AccessLevel {
   NONE,
   SELF,
   ALL,
