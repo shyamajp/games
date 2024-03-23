@@ -95,12 +95,12 @@
       {/if}
     </div>
     {#each player.cards as card (card.raw)}
-      <Card name={player.name} disabled raw={card.raw} />
+      <Card name={player.name} {card} />
     {/each}
   {/each}
 
   <h3>Deck</h3>
   {#each game.deck.cards as card (card.raw)}
-    <Card name="deck" disabled raw={card.raw} />
+    <Card name="deck" {card} />
   {/each}
 </section>
