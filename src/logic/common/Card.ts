@@ -1,3 +1,8 @@
+enum Color {
+  RED = "red",
+  BLACK = "black",
+}
+
 enum Suite {
   CLUBS,
   DIAMONDS,
@@ -34,12 +39,14 @@ export class Card {
   readonly raw;
   readonly suite;
   readonly rank;
+  readonly color;
   accesslevel: AccessLevel;
 
   constructor(raw: number) {
     this.raw = raw;
     this.suite = this.getSuite(false);
     this.rank = this.getRank(false);
+    this.color = this.getColor();
     this.accesslevel = AccessLevel.NONE;
   }
 
@@ -62,10 +69,10 @@ export class Card {
     return rank;
   }
 
-  getColor(): string {
+  getColor(): Color {
     if (this.suite === Suite.DIAMONDS || this.suite === Suite.HEARTS)
-      return "red";
-    return "black";
+      return Color.RED;
+    return Color.BLACK;
   }
 
   display() {

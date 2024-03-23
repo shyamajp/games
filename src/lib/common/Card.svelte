@@ -8,12 +8,21 @@
 
   const card = new Card(raw);
   const content = card.display();
-  const color = card.getColor();
 </script>
 
 <label class="card">
   <input {name} {disabled} type="radio" value={raw} on:click={handleInput} />
-  <span class="content {color}">
+  <span class="content {card.color}">
     {!hidden ? content : ""}
   </span>
 </label>
+
+<style>
+  .red {
+    color: red;
+  }
+
+  .black {
+    color: black;
+  }
+</style>
