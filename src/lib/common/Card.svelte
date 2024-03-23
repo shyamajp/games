@@ -7,13 +7,12 @@
   export let handleInput: (value: any) => void = () => {};
 
   const card = new Card(raw);
-  const content = card.display();
 </script>
 
 <label class="card">
   <input {name} {disabled} type="radio" value={raw} on:click={handleInput} />
   <span class="content {card.color}">
-    {!hidden ? content : ""}
+    {!hidden ? card.content : ""}
   </span>
 </label>
 
