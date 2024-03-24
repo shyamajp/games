@@ -33,9 +33,7 @@ export abstract class Game {
   }
 
   public play(): void {
-    if (this.status === GameStatus.PLAYING) {
-      this.routine();
-    }
+    this.routine();
   }
 
   public next(): void {
