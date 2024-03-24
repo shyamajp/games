@@ -1,4 +1,4 @@
-import { Card } from "./Card";
+import { AccessLevel, Card } from "./Card";
 import { CardDealer } from "./CardDealer";
 import { Deck } from "./Deck";
 import { Player, PlayerStatus } from "./Player";
@@ -70,14 +70,14 @@ export abstract class Game {
       const currentPlayer = this.getCurrentPlayer();
       if (cardCount !== undefined && currentPlayer.cards.length === cardCount)
         break;
-      this.transfer(this.deck, currentPlayer);
+      this.transfer(this.deck, currentPlayer).accessLevel = AccessLevel.SELF;
       this.turn++;
     }
     this.turn = 0;
   }
 
-  protected transfer(from: CardDealer, to: CardDealer, card?: Card): void {
-    to.add(from.remove(card));
+  protected transfer(from: CardDealer, to: CardDealer, card?: Card): Card {
+    return to.add(from.remove(card));
   }
 
   public getStatus(pretty: false): GameStatus;

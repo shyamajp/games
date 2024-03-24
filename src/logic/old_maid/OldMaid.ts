@@ -1,5 +1,5 @@
-import { Card } from "../common/Card";
-import { Game, GameStatus } from "../common/Game";
+import { AccessLevel, Card } from "../common/Card";
+import { Game } from "../common/Game";
 import { PlayerStatus } from "../common/Player";
 
 export class OldMaid extends Game {
@@ -12,11 +12,11 @@ export class OldMaid extends Game {
       this.turn++;
     }
     this.turn = 0;
-    this.input = undefined;
   }
 
   setInput(raw: number | undefined): void {
-    this.input = raw === undefined ? raw : new Card(raw);
+    const card = this.getNextPlayer()?.cards.find((card) => card.raw === raw);
+    this.input = raw === undefined ? undefined : card;
   }
 
   protected cleanup() {
@@ -29,6 +29,11 @@ export class OldMaid extends Game {
     this.judge();
     this.removePairs();
     this.judge();
+    this.setDisabled();
+  }
+
+  public start(): void {
+    super.start();
   }
 
   public next(): void {
@@ -36,6 +41,12 @@ export class OldMaid extends Game {
     do {
       super.next();
     } while (this.getCurrentPlayer().status === PlayerStatus.WON);
+    this.setDisabled();
+  }
+
+  private setDisabled() {
+    this.getCurrentPlayer().setDisabled(true);
+    this.getNextPlayer()?.setDisabled(false);
   }
 
   private judgePlayers(): void {
@@ -58,10 +69,9 @@ export class OldMaid extends Game {
     this.judgeGame();
   }
 
-  // TODO: refactor this method
+  // REFACTOR: update logic
   private removePairs(): void {
     const currentPlayer = this.getCurrentPlayer();
-    // TODO: fix dependency on Card
     const cards: Card[] = currentPlayer.cards;
     const skipIndeces: number[] = [];
     const skipCards: Card[] = [];
@@ -74,7 +84,11 @@ export class OldMaid extends Game {
       }
     }
 
-    skipCards.forEach((card) => this.transfer(currentPlayer, this.deck, card));
+    skipCards.forEach((card) => {
+      this.transfer(currentPlayer, this.deck, card);
+      card.accessLevel = AccessLevel.ALL;
+      card.disabled = true;
+    });
   }
 
   private transferCard(): void {
