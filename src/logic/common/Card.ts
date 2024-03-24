@@ -44,7 +44,7 @@ export class Card {
     }
     this.raw = raw;
     this._accessLevel = AccessLevel.NONE;
-    this._disabled = false;
+    this._disabled = true;
   }
 
   get suit(): Suit | undefined {

@@ -21,7 +21,7 @@ describe("Card", () => {
       const card = new Card(raw);
       expect(card.raw).toEqual(raw);
       expect(card.accessLevel).toEqual(AccessLevel.NONE);
-      expect(card.disabled).toEqual(false);
+      expect(card.disabled).toEqual(true);
       expect(card.suit).toEqual(suit);
       expect(card.rank).toEqual(rank);
       expect(card.color).toEqual(color);
