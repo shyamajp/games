@@ -5,7 +5,7 @@ import {
   CardDoesNotExistError,
   NoCardsLeftError,
 } from "./Error";
-import { Card } from "./Card";
+import { AccessLevel, Card } from "./Card";
 
 export abstract class CardDealer {
   cards: Card[];
@@ -59,5 +59,21 @@ export abstract class CardDealer {
   protected getLastCard(): Card {
     if (this.cards.length === 0) throw new NoCardsLeftError();
     return this.cards.pop()!;
+  }
+
+  setDisabled(disabled: boolean, cardIndex?: number): void {
+    if (cardIndex !== undefined) {
+      this.cards[cardIndex].disabled = disabled;
+    } else {
+      this.cards.forEach((card) => (card.disabled = disabled));
+    }
+  }
+
+  setAccessLevel(accessLevel: AccessLevel, cardIndex?: number): void {
+    if (cardIndex !== undefined) {
+      this.cards[cardIndex].accessLevel = accessLevel;
+    } else {
+      this.cards.forEach((card) => (card.accessLevel = accessLevel));
+    }
   }
 }

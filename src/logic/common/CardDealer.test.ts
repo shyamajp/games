@@ -1,6 +1,6 @@
 import { describe, suite, test, expect } from "vitest";
 import { CardDealer } from "./CardDealer";
-import { Card } from "./Card";
+import { AccessLevel, Card } from "./Card";
 import {
   CardAlreadyExistsError,
   CardDoesNotExistError,
@@ -78,6 +78,28 @@ describe("CardDealer", () => {
       expect(cardDealer.getCardIndex(card)).not.toBe(0);
       cardDealer.sort();
       expect(cardDealer.getCardIndex(card)).toBe(0);
+    });
+
+    test("setDisabled", () => {
+      expect(cardDealer.cards.filter((card) => card.disabled).length).toBe(
+        cardCount,
+      );
+      cardDealer.setDisabled(false);
+      expect(cardDealer.cards.filter((card) => !card.disabled).length).toBe(
+        cardCount,
+      );
+    });
+
+    test("setAccessLevel", () => {
+      expect(
+        cardDealer.cards.filter((card) => card.accessLevel === AccessLevel.NONE)
+          .length,
+      ).toBe(cardCount);
+      cardDealer.setAccessLevel(AccessLevel.ALL);
+      expect(
+        cardDealer.cards.filter((card) => card.accessLevel === AccessLevel.ALL)
+          .length,
+      ).toBe(cardCount);
     });
 
     test("remove", () => {
