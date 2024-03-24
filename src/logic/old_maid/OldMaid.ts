@@ -34,6 +34,7 @@ export class OldMaid extends Game {
 
   public start(): void {
     super.start();
+    this.setDisabled();
   }
 
   public next(): void {
