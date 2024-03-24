@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { Card } from "../../logic/common/Card";
+  import { AccessLevel, Card } from "../../logic/common/Card";
   export let card: Card;
   export let name: string;
   export let handleInput: (value: any) => void = () => {};
@@ -8,12 +8,12 @@
 <label class="card">
   <input
     {name}
-    disabled={false}
+    disabled={card.disabled}
     type="radio"
     value={card.raw}
     on:click={handleInput}
   />
-  <span class="content {card.color}">
+  <span class="content {card.color} {AccessLevel[card.accessLevel]}">
     {card.content}
   </span>
 </label>
@@ -25,5 +25,12 @@
 
   .black {
     color: black;
+  }
+
+  .NONE {
+    background-color: blue;
+  }
+  .SELF {
+    background-color: yellow;
   }
 </style>
