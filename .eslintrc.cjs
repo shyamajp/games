@@ -1,7 +1,11 @@
 // SEE: https://eslint.org/docs/latest/rules/
 // SEE: https://github.com/sveltejs/eslint-plugin-svelte?tab=readme-ov-file#white_check_mark-rules
 module.exports = {
-  extends: ["plugin:svelte/recommended", "plugin:svelte/prettier"],
+  extends: [
+    "plugin:svelte/recommended",
+    "plugin:svelte/prettier",
+    "plugin:vitest/recommended",
+  ],
   parser: "@typescript-eslint/parser",
   parserOptions: {
     project: "tsconfig.json",
