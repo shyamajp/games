@@ -1,19 +1,26 @@
 <script lang="ts">
+  import classnames from "classnames";
   import { AccessLevel, Card } from "../../logic/common/Card";
   export let card: Card;
   export let name: string;
+  export let mine: boolean = false;
+  export let disabled: boolean = card.disabled;
   export let handleInput: (value: any) => void = () => {};
+
+  $: hidden =
+    card.accessLevel === AccessLevel.NONE ||
+    (card.accessLevel === AccessLevel.SELF && !mine);
 </script>
 
-<label class="card">
+<label class={classnames("card", { hidden })}>
   <input
     {name}
-    disabled={card.disabled}
+    {disabled}
     type="radio"
     value={card.raw}
     on:click={handleInput}
   />
-  <span class="content {card.color} {AccessLevel[card.accessLevel]}">
+  <span class="content {card.color}">
     {card.content}
   </span>
 </label>
@@ -27,10 +34,7 @@
     color: black;
   }
 
-  .NONE {
-    background-color: blue;
-  }
-  .SELF {
-    background-color: yellow;
+  .hidden {
+    background-color: gray;
   }
 </style>

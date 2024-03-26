@@ -96,11 +96,10 @@ export abstract class Game {
     return this.players[this.turn % this.players.length];
   }
 
-  public getNextPlayer(): Player | undefined {
+  public getNextPlayer(player = this.getCurrentPlayer()): Player | undefined {
     const players = this.getPlayers();
     if (players.length === 1) return undefined;
-    const currentPlayer = this.getCurrentPlayer();
-    const index = players.findIndex((p) => p.id === currentPlayer.id);
+    const index = players.findIndex((p) => p.id === player.id);
     return players[(index + 1) % players.length];
   }
 }

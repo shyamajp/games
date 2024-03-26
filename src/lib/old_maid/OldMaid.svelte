@@ -11,6 +11,9 @@
     new Player("Bob"),
     new Player("Charlie"),
   ]);
+  let playAs: Player = game.players[0];
+  $: currentPlayer = game.getCurrentPlayer();
+  $: nextPlayer = game.getNextPlayer();
 
   function handleStatus() {
     if (game.status === GameStatus.UNSTARTED) {
@@ -34,6 +37,10 @@
   function handleInput(e: any) {
     game.setInput(+e.target.value);
     game = game;
+  }
+
+  function handlePlayAs(e: any) {
+    playAs = game.players.find((p) => p.id === e.target.value)!;
   }
 </script>
 
@@ -65,6 +72,14 @@
     <li>
       players: {game.players.map((p) => p.name).join(" | ")}
     </li>
+    <li>
+      playing as:
+      <select name="playing-as" id="playing-as" on:change={handlePlayAs}>
+        {#each game.players as player (player.id)}
+          <option value={player.id}>{player.name}</option>
+        {/each}
+      </select>
+    </li>
   </ul>
   <hr />
 
@@ -72,14 +87,23 @@
 
   {#each game.players as player (player.id)}
     <div>
-      {#if player.id === game.getCurrentPlayer().id}
+      {#if player.id === currentPlayer.id}
         ▶️<strong>{player.name}</strong>: ({PlayerStatus[player.status]})
       {:else}
         {player.name}: ({PlayerStatus[player.status]})
       {/if}
     </div>
     {#each player.cards as card (card.raw)}
-      <Card name={player.name} {card} {handleInput} />
+      <!-- TODO(REFACTOR): clean the logic for disabled/hidden -->
+      <Card
+        name={player.name}
+        {card}
+        {handleInput}
+        mine={player.id === playAs?.id}
+        disabled={!(
+          !card.disabled && game.getNextPlayer(playAs)?.id === nextPlayer?.id
+        ) || playAs.status !== PlayerStatus.PLAYING}
+      />
     {/each}
   {/each}
 

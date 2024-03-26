@@ -70,7 +70,7 @@ export class OldMaid extends Game {
     this.judgeGame();
   }
 
-  // REFACTOR: update logic
+  // TODO(REFACTOR): update logic
   private removePairs(): void {
     const currentPlayer = this.getCurrentPlayer();
     const cards: Card[] = currentPlayer.cards;
