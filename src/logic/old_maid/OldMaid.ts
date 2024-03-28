@@ -68,6 +68,7 @@ export class OldMaid extends Game {
     }
   }
 
+  // TODO: combine judgePlayers and judgeGame
   protected judge(): void {
     this.judgePlayers();
     this.judgeGame();

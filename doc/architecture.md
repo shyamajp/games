@@ -67,6 +67,47 @@ classDiagram
     }
 ```
 
+### Lifecycle
+
+Game lifecycle often follows the steps below
+
+1. UNSTARTED
+2. INITIALIZING
+3. PLAYING/PAUSED
+4. OVER
+
+public mehods are:
+
+- start()
+  - Calls `init()`; Initializes game
+  - Set game status to `PLAYING`
+- play()
+  - Calls `routine()`; Does game routine
+- next()
+  - Increments turn
+- end()
+  - Calls `cleanup()`; Cleans up game
+  - Set game status to `OVER`
+- pause()
+  - Set game status to `PAUSED`
+- resume()
+  - Set game status to `PLAYING`
+- restart()
+  - Calls `cleanup()`; Cleans up game
+  - Calls `start()`
+
+protected methods are:
+
+- init()
+  - Sets game status to `INITIALIZING`
+  - Initializes deck and players
+- cleanup()
+  - Cleans up game
+- routine()
+  - Does game routine
+- judge()
+  - Judges players and game; Updates status
+
 ## Old Maid
 
 ### Workflow
