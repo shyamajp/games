@@ -49,9 +49,8 @@ export abstract class Game {
   }
 
   public restart(): void {
-    this.cleanup();
+    this.end();
     this.start();
-    this.status = GameStatus.PLAYING;
   }
 
   protected init(): void {
