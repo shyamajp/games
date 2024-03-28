@@ -12,17 +12,22 @@ classDiagram
     Deck -- Card
     class CardDealer {
         <<Abstract>>
+        +string id
         +number[] cards
+        #init()
         +add()
         +remove()
-        +shuffle()
+        #shuffle()
         +sort()
+        #getCardIndex()
+        +getRandomCard()
+        +getLastCard()
+        +setDisabled()
+        +setAccessLevel()
     }
     class Player{
-        +id id
         +string name
         +enum status
-        +input()
     }
     class Deck {
         +number cardCount
@@ -33,17 +38,32 @@ classDiagram
         +Player[] players
         +number turn
         +enum status
-        +judge()
-        +distribute()
+        +start()
+        +play()
+        +next()
+        +end()
+        +pause()
+        +resume()
+        +restart()
+        #init()
+        #cleanup()
+        #routine()
+        #judge()
+        #distribute()
+        #transfer()
+        +getPlayers()
+        +getCurrentPlayer()
+        +getNextPlayer()
     }
     class Card {
         -number raw
-        +number num
-        +enum suite
-        +getNumber()
-        +getSuite()
-        +getColor()
-        +display()
+        +enum suit
+        +enum rank
+        +string color
+        +string content
+        +content
+        +enum accessLevel
+        +boolean disabled
     }
 ```
 
