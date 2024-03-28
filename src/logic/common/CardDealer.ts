@@ -41,7 +41,7 @@ export abstract class CardDealer {
       this.cards.splice(index, 1);
       return card;
     }
-    return this.getLastCard();
+    return this.cards.pop()!;
   }
 
   protected getCardIndex(card: Card): number {
@@ -56,9 +56,9 @@ export abstract class CardDealer {
     return getRandomElement(this.cards);
   }
 
-  protected getLastCard(): Card {
+  getLastCard(): Card {
     if (this.cards.length === 0) throw new NoCardsLeftError();
-    return this.cards.pop()!;
+    return this.cards[this.cards.length - 1];
   }
 
   setDisabled(disabled: boolean, cardIndex?: number): void {

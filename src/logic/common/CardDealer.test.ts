@@ -17,10 +17,6 @@ class MockCardDealer extends CardDealer {
   getCardIndex(card: Card): number {
     return super.getCardIndex(card);
   }
-
-  getLastCard(): Card {
-    return super.getLastCard();
-  }
 }
 
 describe("CardDealer", () => {
