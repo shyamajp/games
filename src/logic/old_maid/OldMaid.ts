@@ -1,11 +1,14 @@
 import { AccessLevel, Card } from "../common/Card";
+import { Deck } from "../common/Deck";
 import { Game } from "../common/Game";
 import { PlayerStatus } from "../common/Player";
 
 export class OldMaid extends Game {
   input: Card | undefined;
+  deck = new Deck(53);
 
   protected init() {
+    super.init();
     this.distribute();
     for (let i = 0; i < this.players.length; i++) {
       this.removePairs();

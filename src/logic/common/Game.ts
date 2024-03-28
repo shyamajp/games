@@ -13,22 +13,17 @@ export enum GameStatus {
 type PrettyStatus = keyof typeof GameStatus;
 
 export abstract class Game {
-  deck: Deck;
+  abstract deck: Deck;
   players: Player[];
-  turn: number;
-  status: GameStatus;
+  turn: number = 0;
+  status: GameStatus = GameStatus.UNSTARTED;
 
-  constructor(deck: Deck, players: Player[]) {
-    this.deck = deck;
+  constructor(players: Player[]) {
     this.players = players;
-    this.turn = 0;
-    this.status = GameStatus.UNSTARTED;
   }
 
   public start(): void {
-    this.status = GameStatus.INITIALIZING;
     this.init();
-    this.players.forEach((player) => player.init());
     this.status = GameStatus.PLAYING;
   }
 
@@ -59,7 +54,11 @@ export abstract class Game {
     this.status = GameStatus.PLAYING;
   }
 
-  protected abstract init(): void;
+  protected init(): void {
+    this.status = GameStatus.INITIALIZING;
+    this.deck.init();
+    this.players.forEach((player) => player.init());
+  }
   protected abstract cleanup(): void;
 
   protected abstract routine(): void;

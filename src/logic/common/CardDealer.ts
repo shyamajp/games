@@ -8,14 +8,8 @@ import {
 import { AccessLevel, Card } from "./Card";
 
 export abstract class CardDealer {
-  cards: Card[];
-  id: string;
-
-  constructor() {
-    this.id = uuidv4();
-    this.cards = [];
-    this.init();
-  }
+  cards: Card[] = [];
+  id: string = uuidv4();
 
   protected abstract init(): void;
 

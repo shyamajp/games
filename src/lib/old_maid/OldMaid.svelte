@@ -1,12 +1,10 @@
 <script lang="ts">
   import Card from "../common/Card.svelte";
-  import { Deck } from "../../logic/common/Deck";
   import { OldMaid } from "../../logic/old_maid/OldMaid";
   import { Player, PlayerStatus } from "../../logic/common/Player";
   import { GameStatus } from "../../logic/common/Game";
 
-  const deck = new Deck(53);
-  let game = new OldMaid(deck, [
+  let game = new OldMaid([
     new Player("Alice"),
     new Player("Bob"),
     new Player("Charlie"),

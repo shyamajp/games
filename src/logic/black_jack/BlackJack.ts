@@ -5,15 +5,18 @@ import { Player, PlayerStatus } from "../common/Player";
 
 export class BlackJack extends Game {
   dealer: Player;
+  deck: Deck = new Deck(52);
 
-  constructor(deck: Deck, players: Player[]) {
-    super(deck, players);
+  constructor(players: Player[]) {
+    super(players);
     // TODO: dependency injection?
     this.dealer = new Player("Dealer");
+    // TODO: dealer should not be in players
     this.players.push(this.dealer);
   }
 
   protected init() {
+    super.init();
     this.distribute(2);
     for (let i = 0; i < this.players.length; i++) {
       this.judgePlayer(this.players[i]);

@@ -53,8 +53,8 @@ export enum AccessLevel {
 
 export class Card {
   readonly raw: number;
-  private _accessLevel: AccessLevel;
-  private _disabled: boolean;
+  private _accessLevel: AccessLevel = AccessLevel.NONE;
+  private _disabled: boolean = true;
 
   /**
    * Constructs a new Card instance.
@@ -66,8 +66,6 @@ export class Card {
       throw new IllegalCardError();
     }
     this.raw = raw;
-    this._accessLevel = AccessLevel.NONE;
-    this._disabled = true;
   }
 
   /**

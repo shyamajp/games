@@ -10,13 +10,12 @@ export enum PlayerStatus {
 
 export class Player extends CardDealer {
   readonly name: string;
-  status: PlayerStatus;
+  status: PlayerStatus = PlayerStatus.UNSTARTED;
   input: any;
 
   constructor(name: string) {
     super();
     this.name = name;
-    this.status = PlayerStatus.UNSTARTED;
   }
 
   init(): void {
