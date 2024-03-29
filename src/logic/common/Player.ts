@@ -17,7 +17,7 @@ export class Player {
   input: any; // TODO: Define input type
   hand: Deck;
 
-  constructor(name: string, count: number = 0) {
+  constructor(name: string, count: number = 54) {
     this.name = name;
     this.count = count;
     this.hand = new Deck(count);

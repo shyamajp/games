@@ -4,26 +4,15 @@ import { AccessLevel, Card } from "./Card";
 import {
   CardAlreadyExistsError,
   CardDoesNotExistError,
+  IllegalCardError,
   NoCardsLeftError,
 } from "./Error";
-
-class MockDeck extends Deck {
-  protected init(): void {}
-
-  shuffle() {
-    super.shuffle();
-  }
-
-  getCardIndex(card: Card): number {
-    return super.getCardIndex(card);
-  }
-}
 
 describe("Deck", () => {
   const card = new Card(0);
 
   suite("With no cards", () => {
-    const deck = new MockDeck();
+    const deck = new Deck(0);
     test("constructor", () => {
       expect(deck.id.length).toBe(36);
       expect(deck.cards.length).toBe(0);
@@ -55,10 +44,15 @@ describe("Deck", () => {
   });
 
   suite("With multiple cards", () => {
-    const deck = new MockDeck();
     const cardCount = 54;
-    deck.cards = Array.from(Array(cardCount).keys()).map((i) => new Card(i));
-    expect(deck.cards.length).toBe(cardCount);
+    const deck = new Deck(cardCount);
+    const firstCard = new Card(0);
+    const illegalCard = new Card(cardCount);
+
+    test("generate", () => {
+      deck.generate();
+      expect(deck.cards.length).toBe(cardCount);
+    });
 
     test("getRandomCard", { retry: 3 }, () => {
       const random1 = deck.getRandomCard();
@@ -66,12 +60,21 @@ describe("Deck", () => {
       expect(random1.raw).not.toBe(random2.raw);
     });
 
+    test("getLastCard", { retry: 3 }, () => {
+      const card = deck.getLastCard();
+      expect(card.raw).toBe(cardCount - 1);
+    });
+
+    test("getCardIndex", () => {
+      expect(() => deck.getCardIndex(illegalCard)).toThrow(IllegalCardError);
+    });
+
     test("getCardIndex/shuffle/sort", { retry: 3 }, () => {
-      expect(deck.getCardIndex(card)).toBe(0);
+      expect(deck.getCardIndex(firstCard)).toBe(0);
       deck.shuffle();
-      expect(deck.getCardIndex(card)).not.toBe(0);
+      expect(deck.getCardIndex(firstCard)).not.toBe(0);
       deck.sort();
-      expect(deck.getCardIndex(card)).toBe(0);
+      expect(deck.getCardIndex(firstCard)).toBe(0);
     });
 
     test("setDisabled", () => {
@@ -80,6 +83,9 @@ describe("Deck", () => {
       expect(deck.cards.filter((card) => !card.disabled).length).toBe(
         cardCount,
       );
+
+      deck.setDisabled(true, 0);
+      expect(deck.cards[0].disabled).toBe(true);
     });
 
     test("setAccessLevel", () => {
@@ -92,22 +98,25 @@ describe("Deck", () => {
         deck.cards.filter((card) => card.accessLevel === AccessLevel.ALL)
           .length,
       ).toBe(cardCount);
+
+      deck.setAccessLevel(AccessLevel.SELF, 0);
+      expect(deck.cards[0].accessLevel).toBe(AccessLevel.SELF);
     });
 
     test("remove", () => {
-      expect(() => deck.remove(new Card(cardCount))).toThrow(
-        CardDoesNotExistError,
-      );
+      expect(() => deck.remove(illegalCard)).toThrow(IllegalCardError);
     });
 
     test("add", () => {
+      expect(() => deck.add(illegalCard)).toThrow(IllegalCardError);
       expect(() => deck.add(card)).toThrow(CardAlreadyExistsError);
     });
 
-    test("add/remove", () => {
-      expect(() => deck.remove(new Card(0))).not.toThrowError();
+    test("remove/add", () => {
+      expect(() => deck.remove(firstCard)).not.toThrowError();
+      expect(() => deck.remove(firstCard)).toThrow(CardDoesNotExistError);
       expect(deck.cards.length).toBe(cardCount - 1);
-      expect(() => deck.add(new Card(cardCount))).not.toThrowError();
+      expect(() => deck.add(firstCard)).not.toThrowError();
       expect(deck.cards.length).toBe(cardCount);
       expect(() => deck.remove()).not.toThrowError();
       expect(deck.cards.length).toBe(cardCount - 1);
