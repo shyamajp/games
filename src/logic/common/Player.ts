@@ -1,3 +1,4 @@
+import { v4 as uuidv4 } from "uuid";
 import { Deck } from "./Deck";
 
 export enum PlayerStatus {
@@ -8,14 +9,18 @@ export enum PlayerStatus {
   DRAW,
 }
 
-export class Player extends Deck {
+export class Player {
+  readonly id: string = uuidv4();
   readonly name: string;
+  readonly count: number; // TODO: Pass count from Game?
   status: PlayerStatus = PlayerStatus.UNSTARTED;
-  input: any;
+  input: any; // TODO: Define input type
+  hand: Deck;
 
-  constructor(name: string) {
-    super();
+  constructor(name: string, count: number = 0) {
     this.name = name;
+    this.count = count;
+    this.hand = new Deck(count);
   }
 
   init(): void {

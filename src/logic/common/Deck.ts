@@ -7,18 +7,25 @@ import {
 } from "./Error";
 import { AccessLevel, Card } from "./Card";
 
-export abstract class Deck {
+export class Deck {
+  readonly id: string = uuidv4();
+  readonly count: number;
   cards: Card[] = [];
-  id: string = uuidv4();
 
-  protected abstract init(): void;
+  constructor(count: number) {
+    this.count = count;
+  }
 
-  protected shuffle(): void {
+  shuffle(): void {
     this.cards.sort(() => Math.random() - 0.5);
   }
 
   sort(): void {
     this.cards.sort((a, b) => a.raw - b.raw);
+  }
+
+  generate(): void {
+    this.cards = Array.from(Array(this.count).keys()).map((i) => new Card(i));
   }
 
   add(card: Card): Card {
@@ -38,7 +45,7 @@ export abstract class Deck {
     return this.cards.pop()!;
   }
 
-  protected getCardIndex(card: Card): number {
+  getCardIndex(card: Card): number {
     if (this.cards.length === 0) throw new NoCardsLeftError();
     const index = this.cards.map((card) => card.raw).indexOf(card.raw);
     if (index < 0) throw new CardDoesNotExistError();

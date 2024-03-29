@@ -1,6 +1,6 @@
 import { AccessLevel, Card } from "./Card";
 import { Deck } from "./Deck";
-import { Dealer } from "./Dealer";
+import { Playground } from "./Playground";
 import { Player, PlayerStatus } from "./Player";
 
 export enum GameStatus {
@@ -13,7 +13,7 @@ export enum GameStatus {
 type PrettyStatus = keyof typeof GameStatus;
 
 export abstract class Game {
-  abstract deck: Dealer;
+  abstract playground: Playground;
   players: Player[];
   turn: number = 0;
   status: GameStatus = GameStatus.UNSTARTED;
@@ -55,7 +55,7 @@ export abstract class Game {
 
   protected init(): void {
     this.status = GameStatus.INITIALIZING;
-    this.deck.init();
+    this.playground.init();
     this.players.forEach((player) => player.init());
   }
   protected abstract cleanup(): void;
@@ -64,11 +64,15 @@ export abstract class Game {
   protected abstract judge(): void;
 
   protected distribute(cardCount?: number): void {
-    while (this.deck.cards.length > 0) {
+    while (this.playground.starter.cards.length > 0) {
       const currentPlayer = this.getCurrentPlayer();
-      if (cardCount !== undefined && currentPlayer.cards.length === cardCount)
+      if (
+        cardCount !== undefined &&
+        currentPlayer.hand!.cards.length === cardCount
+      )
         break;
-      this.transfer(this.deck, currentPlayer).accessLevel = AccessLevel.SELF;
+      this.transfer(this.playground.starter, currentPlayer.hand!).accessLevel =
+        AccessLevel.SELF;
       this.turn++;
     }
     this.turn = 0;

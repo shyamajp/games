@@ -1,16 +1,14 @@
 import { Card } from "../common/Card";
-import { Dealer } from "../common/Dealer";
+import { Playground } from "../common/Playground";
 import { Game, GameStatus } from "../common/Game";
 import { Player, PlayerStatus } from "../common/Player";
 
 export class BlackJack extends Game {
-  dealer: Player;
-  deck: Dealer = new Dealer(52);
+  dealer: Player = new Player("Dealer");
+  playground: Playground = new Playground(52);
 
   constructor(players: Player[]) {
     super(players);
-    // TODO: dependency injection?
-    this.dealer = new Player("Dealer");
     // TODO: dealer should not be in players
     this.players.push(this.dealer);
   }
@@ -30,14 +28,14 @@ export class BlackJack extends Game {
   protected routine(): void {
     const currentPlayer = this.getCurrentPlayer();
     if (currentPlayer.status === PlayerStatus.PLAYING) {
-      this.transfer(this.deck, currentPlayer);
+      this.transfer(this.playground.starter, currentPlayer.hand);
       this.judgePlayer(currentPlayer);
     }
   }
 
   public challenge(): void {
-    while (this.calculateScore(this.dealer.cards) < 17) {
-      this.transfer(this.deck, this.dealer);
+    while (this.calculateScore(this.dealer.hand.cards) < 17) {
+      this.transfer(this.playground.starter, this.dealer.hand);
     }
     this.judge();
   }
@@ -51,7 +49,7 @@ export class BlackJack extends Game {
   }
 
   private judgePlayer(player: Player): void {
-    const sum = this.calculateScore(player.cards);
+    const sum = this.calculateScore(player.hand.cards);
     if (sum > 21) {
       player.status = PlayerStatus.LOST;
     } else if (sum === 21) {
@@ -62,8 +60,8 @@ export class BlackJack extends Game {
   protected judge(): void {
     for (let i = 0; i < this.players.length; i++) {
       const player = this.players[i];
-      const playerScore = this.calculateScore(player.cards);
-      const dealerScore = this.calculateScore(this.dealer.cards);
+      const playerScore = this.calculateScore(player.hand.cards);
+      const dealerScore = this.calculateScore(this.playground.starter.cards);
 
       if (playerScore > 21) {
         player.status = PlayerStatus.LOST;

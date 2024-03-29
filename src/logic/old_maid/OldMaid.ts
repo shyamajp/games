@@ -1,11 +1,11 @@
 import { AccessLevel, Card } from "../common/Card";
-import { Dealer } from "../common/Dealer";
+import { Playground } from "../common/Playground";
 import { Game } from "../common/Game";
 import { PlayerStatus } from "../common/Player";
 
 export class OldMaid extends Game {
   input: Card | undefined;
-  deck = new Dealer(53);
+  playground = new Playground(53);
 
   protected init() {
     super.init();
@@ -18,7 +18,9 @@ export class OldMaid extends Game {
   }
 
   setInput(raw: number | undefined): void {
-    const card = this.getNextPlayer()?.cards.find((card) => card.raw === raw);
+    const card = this.getNextPlayer()?.hand?.cards.find(
+      (card) => card.raw === raw,
+    );
     this.input = raw === undefined ? undefined : card;
   }
 
@@ -49,14 +51,14 @@ export class OldMaid extends Game {
   }
 
   private setDisabled() {
-    this.getCurrentPlayer().setDisabled(true);
-    this.getNextPlayer()?.setDisabled(false);
+    this.getCurrentPlayer().hand?.setDisabled(true);
+    this.getNextPlayer()?.hand?.setDisabled(false);
   }
 
   private judgePlayers(): void {
     const players = this.getPlayers();
     players.forEach((player) => {
-      if (player.cards.length === 0) player.status = PlayerStatus.WON;
+      if (player.hand?.cards.length === 0) player.status = PlayerStatus.WON;
     });
   }
 
@@ -77,7 +79,7 @@ export class OldMaid extends Game {
   // TODO(REFACTOR): update logic
   private removePairs(): void {
     const currentPlayer = this.getCurrentPlayer();
-    const cards: Card[] = currentPlayer.cards;
+    const cards: Card[] = currentPlayer.hand!.cards;
     const skipIndeces: number[] = [];
     const skipCards: Card[] = [];
     for (let i = 0; i < cards.length; i++) {
@@ -90,7 +92,7 @@ export class OldMaid extends Game {
     }
 
     skipCards.forEach((card) => {
-      this.transfer(currentPlayer, this.deck, card);
+      this.transfer(currentPlayer.hand, this.playground.starter, card);
       card.accessLevel = AccessLevel.ALL;
       card.disabled = true;
     });
@@ -99,7 +101,7 @@ export class OldMaid extends Game {
   private transferCard(): void {
     const currentPlayer = this.getCurrentPlayer();
     const nextPlayer = this.getNextPlayer()!;
-    const card: Card = this.input || nextPlayer.getRandomCard();
-    this.transfer(nextPlayer, currentPlayer, card);
+    const card: Card = this.input || nextPlayer.hand.getRandomCard();
+    this.transfer(nextPlayer.hand, currentPlayer.hand, card);
   }
 }

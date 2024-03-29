@@ -5,9 +5,9 @@
   import { GameStatus } from "../../logic/common/Game";
 
   let game = new OldMaid([
-    new Player("Alice"),
-    new Player("Bob"),
-    new Player("Charlie"),
+    new Player("Alice", 53),
+    new Player("Bob", 53),
+    new Player("Charlie", 53),
   ]);
   let playAs: Player = game.players[0];
   $: currentPlayer = game.getCurrentPlayer();
@@ -91,7 +91,7 @@
         {player.name}: ({PlayerStatus[player.status]})
       {/if}
     </div>
-    {#each player.cards as card (card.raw)}
+    {#each player.hand.cards as card (card.raw)}
       <!-- TODO(REFACTOR): clean the logic for disabled/hidden -->
       <Card
         name={player.name}
@@ -106,7 +106,7 @@
   {/each}
 
   <h3>Deck</h3>
-  {#each game.deck.cards as card (card.raw)}
+  {#each game.playground.starter.cards as card (card.raw)}
     <Card name="deck" {card} />
   {/each}
 </section>
