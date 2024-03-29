@@ -9,7 +9,7 @@
 | Old Maid  | 🧪 alpha     |
 | Blackjack | 🔨 pre-alpha |
 | Sevens    | 💭 unstarted |
-| Speed     | 💭 unstarted |
+| Speed     | 🔨 pre-alpha |
 | Tycoon    | 💭 unstarted |
 | Doubt     | 💭 unstarted |
 | Hearts    | 💭 unstarted |

@@ -63,6 +63,7 @@ export abstract class Game {
   protected abstract routine(): void;
   protected abstract judge(): void;
 
+  // TODO(REFACTOR): update logic
   protected distribute(cardCount?: number): void {
     while (this.playground.starter.cards.length > 0) {
       const currentPlayer = this.getCurrentPlayer();

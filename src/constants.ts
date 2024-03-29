@@ -15,4 +15,9 @@ export const games: Game[] = [
     name: "Black Jack",
     componentName: "BlackJack",
   },
+  {
+    id: "speed",
+    name: "Speed",
+    componentName: "Speed",
+  },
 ];
