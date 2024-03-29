@@ -1,6 +1,6 @@
 import { AccessLevel, Card } from "./Card";
-import { CardDealer } from "./CardDealer";
 import { Deck } from "./Deck";
+import { Dealer } from "./Dealer";
 import { Player, PlayerStatus } from "./Player";
 
 export enum GameStatus {
@@ -13,7 +13,7 @@ export enum GameStatus {
 type PrettyStatus = keyof typeof GameStatus;
 
 export abstract class Game {
-  abstract deck: Deck;
+  abstract deck: Dealer;
   players: Player[];
   turn: number = 0;
   status: GameStatus = GameStatus.UNSTARTED;
@@ -74,7 +74,7 @@ export abstract class Game {
     this.turn = 0;
   }
 
-  protected transfer(from: CardDealer, to: CardDealer, card?: Card): Card {
+  protected transfer(from: Deck, to: Deck, card?: Card): Card {
     return to.add(from.remove(card));
   }
 

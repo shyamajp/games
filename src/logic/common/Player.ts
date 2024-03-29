@@ -1,4 +1,4 @@
-import { CardDealer } from "./CardDealer";
+import { Deck } from "./Deck";
 
 export enum PlayerStatus {
   UNSTARTED,
@@ -8,7 +8,7 @@ export enum PlayerStatus {
   DRAW,
 }
 
-export class Player extends CardDealer {
+export class Player extends Deck {
   readonly name: string;
   status: PlayerStatus = PlayerStatus.UNSTARTED;
   input: any;

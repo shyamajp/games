@@ -1,10 +1,10 @@
 import { describe, test, expect, suite } from "vitest";
 import { Game, GameStatus } from "./Game";
-import { Deck } from "./Deck";
+import { Dealer } from "./Dealer";
 import { Player, PlayerStatus } from "./Player";
 
 class MockGame extends Game {
-  deck = new Deck(54);
+  deck = new Dealer(54);
   protected cleanup(): void {}
   protected routine(): void {}
   protected judge(): void {}

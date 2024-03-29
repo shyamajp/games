@@ -1,11 +1,11 @@
 import { Card } from "../common/Card";
-import { Deck } from "../common/Deck";
+import { Dealer } from "../common/Dealer";
 import { Game, GameStatus } from "../common/Game";
 import { Player, PlayerStatus } from "../common/Player";
 
 export class BlackJack extends Game {
   dealer: Player;
-  deck: Deck = new Deck(52);
+  deck: Dealer = new Dealer(52);
 
   constructor(players: Player[]) {
     super(players);
