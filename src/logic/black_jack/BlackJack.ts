@@ -28,14 +28,14 @@ export class BlackJack extends Game {
   protected routine(): void {
     const currentPlayer = this.getCurrentPlayer();
     if (currentPlayer.status === PlayerStatus.PLAYING) {
-      this.transfer(this.playground.starter, currentPlayer.hand);
+      this.transfer(this.playground.data.starter, currentPlayer.data.hand);
       this.judgePlayer(currentPlayer);
     }
   }
 
   public challenge(): void {
-    while (this.calculateScore(this.dealer.hand.cards) < 17) {
-      this.transfer(this.playground.starter, this.dealer.hand);
+    while (this.calculateScore(this.dealer.data.hand.cards) < 17) {
+      this.transfer(this.playground.data.starter, this.dealer.data.hand);
     }
     this.judge();
   }
@@ -49,7 +49,7 @@ export class BlackJack extends Game {
   }
 
   private judgePlayer(player: Player): void {
-    const sum = this.calculateScore(player.hand.cards);
+    const sum = this.calculateScore(player.data.hand.cards);
     if (sum > 21) {
       player.status = PlayerStatus.LOST;
     } else if (sum === 21) {
@@ -60,8 +60,10 @@ export class BlackJack extends Game {
   protected judge(): void {
     for (let i = 0; i < this.players.length; i++) {
       const player = this.players[i];
-      const playerScore = this.calculateScore(player.hand.cards);
-      const dealerScore = this.calculateScore(this.playground.starter.cards);
+      const playerScore = this.calculateScore(player.data.hand.cards);
+      const dealerScore = this.calculateScore(
+        this.playground.data.starter.cards,
+      );
 
       if (playerScore > 21) {
         player.status = PlayerStatus.LOST;

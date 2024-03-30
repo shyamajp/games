@@ -25,17 +25,17 @@ export class Speed extends Game {
     // put the first card from each player to the field
     for (let i = 0; i < this.players.length; i++) {
       const player = this.players[i];
-      const card = player.hand.getLastCard();
+      const card = player.data.hand.getLastCard();
       const field = this.playground.fields[i];
       card.accessLevel = AccessLevel.ALL;
       // TODO(FIX): swap hand and stock
-      this.transfer(player.hand, field, card);
+      this.transfer(player.data.hand, field, card);
 
       for (let _i = 0; _i < OPEN_CARDS; _i++) {
-        const card = this.players[i].hand.getLastCard();
+        const card = this.players[i].data.hand.getLastCard();
         card.accessLevel = AccessLevel.ALL;
         card.disabled = false;
-        this.transfer(player.hand, player.stock, card);
+        this.transfer(player.data.hand, player.stock, card);
       }
     }
     // TODO: allow game without turn
@@ -51,7 +51,7 @@ export class Speed extends Game {
   protected judge(): void {
     const players = this.getPlayers();
     players.forEach((player) => {
-      if (player.hand.cards.length === 0) {
+      if (player.data.hand.cards.length === 0) {
         player.status = PlayerStatus.WON;
         if (players.length === 2) {
           this.status = GameStatus.OVER;

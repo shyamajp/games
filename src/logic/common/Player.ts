@@ -15,12 +15,12 @@ export class Player {
   readonly count: number; // TODO: Pass count from Game?
   status: PlayerStatus = PlayerStatus.UNSTARTED;
   input: any; // TODO: Define input type
-  hand: Deck;
+  data: { [key: string]: Deck };
 
   constructor(name: string, count: number = 54) {
     this.name = name;
     this.count = count;
-    this.hand = new Deck(count);
+    this.data = { hand: new Deck(count) };
   }
 
   init(): void {

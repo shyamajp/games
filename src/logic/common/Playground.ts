@@ -3,15 +3,17 @@ import { Deck } from "./Deck";
 export class Playground {
   readonly name: string = "Playground";
   readonly count: number;
-  starter: Deck;
+  data: { [key: string]: Deck };
 
   constructor(count: number) {
     this.count = count;
-    this.starter = new Deck(this.count);
-    this.starter.generate();
+    this.data = {
+      starter: new Deck(this.count),
+    };
+    this.data.starter.generate();
   }
 
   init(): void {
-    this.starter.shuffle();
+    this.data.starter.shuffle();
   }
 }

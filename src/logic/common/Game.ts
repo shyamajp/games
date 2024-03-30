@@ -65,15 +65,17 @@ export abstract class Game {
 
   // TODO(REFACTOR): update logic
   protected distribute(cardCount?: number): void {
-    while (this.playground.starter.cards.length > 0) {
+    while (this.playground.data.starter.cards.length > 0) {
       const currentPlayer = this.getCurrentPlayer();
       if (
         cardCount !== undefined &&
-        currentPlayer.hand!.cards.length === cardCount
+        currentPlayer.data.hand!.cards.length === cardCount
       )
         break;
-      this.transfer(this.playground.starter, currentPlayer.hand!).accessLevel =
-        AccessLevel.SELF;
+      this.transfer(
+        this.playground.data.starter,
+        currentPlayer.data.hand!,
+      ).accessLevel = AccessLevel.SELF;
       this.turn++;
     }
     this.turn = 0;

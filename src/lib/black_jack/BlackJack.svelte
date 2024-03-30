@@ -92,13 +92,13 @@
         {player.name}: ({PlayerStatus[player.status]})
       {/if}
     </div>
-    {#each player.hand.cards as card (card.raw)}
+    {#each player.data.hand.cards as card (card.raw)}
       <Card name={player.name} {card} />
     {/each}
   {/each}
 
   <h3>Deck</h3>
-  {#each game.playground.starter.cards as card (card.raw)}
+  {#each game.playground.data.starter.cards as card (card.raw)}
     <Card name="deck" {card} />
   {/each}
 </section>

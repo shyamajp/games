@@ -18,7 +18,7 @@ export class OldMaid extends Game {
   }
 
   setInput(raw: number | undefined): void {
-    const card = this.getNextPlayer()?.hand?.cards.find(
+    const card = this.getNextPlayer()?.data.hand?.cards.find(
       (card) => card.raw === raw,
     );
     this.input = raw === undefined ? undefined : card;
@@ -51,14 +51,15 @@ export class OldMaid extends Game {
   }
 
   private setDisabled() {
-    this.getCurrentPlayer().hand?.setDisabled(true);
-    this.getNextPlayer()?.hand?.setDisabled(false);
+    this.getCurrentPlayer().data.hand?.setDisabled(true);
+    this.getNextPlayer()?.data.hand?.setDisabled(false);
   }
 
   private judgePlayers(): void {
     const players = this.getPlayers();
     players.forEach((player) => {
-      if (player.hand?.cards.length === 0) player.status = PlayerStatus.WON;
+      if (player.data.hand?.cards.length === 0)
+        player.status = PlayerStatus.WON;
     });
   }
 
@@ -79,7 +80,7 @@ export class OldMaid extends Game {
   // TODO(REFACTOR): update logic
   private removePairs(): void {
     const currentPlayer = this.getCurrentPlayer();
-    const cards: Card[] = currentPlayer.hand!.cards;
+    const cards: Card[] = currentPlayer.data.hand!.cards;
     const skipIndeces: number[] = [];
     const skipCards: Card[] = [];
     for (let i = 0; i < cards.length; i++) {
@@ -92,7 +93,11 @@ export class OldMaid extends Game {
     }
 
     skipCards.forEach((card) => {
-      this.transfer(currentPlayer.hand, this.playground.starter, card);
+      this.transfer(
+        currentPlayer.data.hand,
+        this.playground.data.starter,
+        card,
+      );
       card.accessLevel = AccessLevel.ALL;
       card.disabled = true;
     });
@@ -101,7 +106,7 @@ export class OldMaid extends Game {
   private transferCard(): void {
     const currentPlayer = this.getCurrentPlayer();
     const nextPlayer = this.getNextPlayer()!;
-    const card: Card = this.input || nextPlayer.hand.getRandomCard();
-    this.transfer(nextPlayer.hand, currentPlayer.hand, card);
+    const card: Card = this.input || nextPlayer.data.hand.getRandomCard();
+    this.transfer(nextPlayer.data.hand, currentPlayer.data.hand, card);
   }
 }
