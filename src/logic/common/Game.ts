@@ -60,22 +60,18 @@ export abstract class Game {
   protected abstract routine(): void;
   protected abstract judge(): void;
 
-  // TODO(REFACTOR): update logic
-  protected distribute(cardCount?: number): void {
-    while (this.playground.data.starter.cards.length > 0) {
-      const currentPlayer = this.getCurrentPlayer();
-      if (
-        cardCount !== undefined &&
-        currentPlayer.data.hand!.cards.length === cardCount
-      )
-        break;
-      this.transfer(
-        this.playground.data.starter,
-        currentPlayer.data.hand!,
-      ).accessLevel = AccessLevel.SELF;
-      this.turn++;
+  protected distribute(
+    cardCount?: number,
+    tos: Deck[] = this.players.map((player) => player.data.hand),
+    from: Deck = this.playground.data.starter,
+  ): void {
+    let i = 0;
+    while (from.cards.length > 0) {
+      const to = tos[i % tos.length];
+      if (cardCount !== undefined && to.cards.length === cardCount) break;
+      this.transfer(from, to).accessLevel = AccessLevel.SELF;
+      i++;
     }
-    this.turn = 0;
   }
 
   protected transfer(from: Deck, to: Deck, card?: Card): Card {
