@@ -46,7 +46,6 @@ classDiagram
         +resume()
         +restart()
         #init()
-        #cleanup()
         #routine()
         #judge()
         #distribute()
@@ -86,14 +85,12 @@ public mehods are:
 - next()
   - Increments turn
 - end()
-  - Calls `cleanup()`; Cleans up game
   - Set game status to `OVER`
 - pause()
   - Set game status to `PAUSED`
 - resume()
   - Set game status to `PLAYING`
 - restart()
-  - Calls `cleanup()`; Cleans up game
   - Calls `start()`
 
 protected methods are:
@@ -101,8 +98,6 @@ protected methods are:
 - init()
   - Sets game status to `INITIALIZING`
   - Initializes deck and players
-- cleanup()
-  - Cleans up game
 - routine()
   - Does game routine
 - judge()

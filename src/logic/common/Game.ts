@@ -36,7 +36,6 @@ export abstract class Game {
   }
 
   public end(): void {
-    this.cleanup();
     this.status = GameStatus.OVER;
   }
 
@@ -49,7 +48,6 @@ export abstract class Game {
   }
 
   public restart(): void {
-    this.end();
     this.start();
   }
 
@@ -58,7 +56,6 @@ export abstract class Game {
     this.playground.init();
     this.players.forEach((player) => player.init());
   }
-  protected abstract cleanup(): void;
 
   protected abstract routine(): void;
   protected abstract judge(): void;

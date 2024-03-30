@@ -45,7 +45,16 @@ export class Deck {
    * Generates the cards for the deck.
    */
   generate(): void {
-    this.cards = Array.from(Array(this.count).keys()).map((i) => new Card(i));
+    for (let i = 0; i < this.count; i++) {
+      this.add(new Card(i));
+    }
+  }
+
+  /**
+   * Clears the deck of all cards.
+   */
+  clear(): void {
+    this.cards = [];
   }
 
   /**

@@ -23,8 +23,6 @@ export class BlackJack extends Game {
     this.turn = 0;
   }
 
-  protected cleanup() {}
-
   protected routine(): void {
     const currentPlayer = this.getCurrentPlayer();
     if (currentPlayer.status === PlayerStatus.PLAYING) {

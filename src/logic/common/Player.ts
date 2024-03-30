@@ -20,10 +20,11 @@ export class Player {
   constructor(name: string, count: number = 54) {
     this.name = name;
     this.count = count;
-    this.data = { hand: new Deck(count) };
+    this.data = { hand: new Deck(this.count) };
   }
 
   init(): void {
+    this.data.hand.clear();
     this.status = PlayerStatus.PLAYING;
   }
 }

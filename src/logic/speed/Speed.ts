@@ -42,8 +42,6 @@ export class Speed extends Game {
     // this.turn = -1;
   }
 
-  protected cleanup() {}
-
   protected routine(): void {
     this.judge();
   }

@@ -10,10 +10,11 @@ export class Playground {
     this.data = {
       starter: new Deck(this.count),
     };
-    this.data.starter.generate();
   }
 
   init(): void {
+    this.data.starter.clear();
+    this.data.starter.generate();
     this.data.starter.shuffle();
   }
 }

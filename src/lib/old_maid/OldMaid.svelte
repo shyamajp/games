@@ -105,8 +105,13 @@
     {/each}
   {/each}
 
-  <h3>Deck</h3>
+  <h3>Plauground</h3>
+  <h4>Starter</h4>
   {#each game.playground.data.starter.cards as card (card.raw)}
-    <Card name="deck" {card} />
+    <Card name="starter" {card} />
+  {/each}
+  <h4>Waste</h4>
+  {#each game.playground.data.waste.cards as card (card.raw)}
+    <Card name="waste" {card} />
   {/each}
 </section>

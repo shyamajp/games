@@ -1,14 +1,25 @@
 import { AccessLevel, Card } from "../common/Card";
 import { Playground } from "../common/Playground";
 import { Game } from "../common/Game";
-import { PlayerStatus } from "../common/Player";
+import { Player, PlayerStatus } from "../common/Player";
+import { Deck } from "../common/Deck";
 
 export class OldMaid extends Game {
   input: Card | undefined;
   playground = new Playground(53);
 
+  constructor(players: Player[]) {
+    super(players);
+    this.playground.data = {
+      ...this.playground.data,
+      waste: new Deck(53),
+    };
+  }
+
   protected init() {
     super.init();
+    this.playground.data.waste.clear();
+
     this.distribute();
     for (let i = 0; i < this.players.length; i++) {
       this.removePairs();
@@ -24,13 +35,9 @@ export class OldMaid extends Game {
     this.input = raw === undefined ? undefined : card;
   }
 
-  protected cleanup() {
-    this.setInput(undefined);
-  }
-
   protected routine(): void {
     this.transferCard();
-    this.cleanup();
+    this.setInput(undefined);
     this.judge();
     this.removePairs();
     this.judge();
@@ -93,11 +100,7 @@ export class OldMaid extends Game {
     }
 
     skipCards.forEach((card) => {
-      this.transfer(
-        currentPlayer.data.hand,
-        this.playground.data.starter,
-        card,
-      );
+      this.transfer(currentPlayer.data.hand, this.playground.data.waste, card);
       card.accessLevel = AccessLevel.ALL;
       card.disabled = true;
     });
