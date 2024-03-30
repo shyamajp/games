@@ -1,11 +1,10 @@
 <script lang="ts">
   import Card from "../common/Card.svelte";
   import { Speed } from "../../logic/speed/Speed";
-  import { PlayerStatus } from "../../logic/common/Player";
+  import { Player, PlayerStatus } from "../../logic/common/Player";
   import { GameStatus } from "../../logic/common/Game";
-  import { SpeedPlayer } from "../../logic/speed/SpeedPlayer";
 
-  let game = new Speed([new SpeedPlayer("Alice"), new SpeedPlayer("Bob")]);
+  let game = new Speed([new Player("Alice"), new Player("Bob")]);
 
   function handleStatus() {
     if (game.status === GameStatus.UNSTARTED) {
@@ -56,23 +55,22 @@
     {/each}
 
     <h4>Stock</h4>
-    {#each player.stock.cards as card (card.raw)}
+    {#each player.data.stock.cards as card (card.raw)}
       <Card name={player.name} {card} />
     {/each}
   {/each}
 
-  <h3>Deck (Main)</h3>
-  {#each game.playground.fields as field (field.id)}
-    <div>
-      {field.id}
-    </div>
-    {#each field.cards as card (card.raw)}
-      <Card name={field.id} {card} />
-    {/each}
-  {/each}
-
-  <h3>Deck (Starter)</h3>
+  <h3>Playground</h3>
+  <h4>Starter</h4>
   {#each game.playground.data.starter.cards as card (card.raw)}
     <Card name="starter" {card} />
+  {/each}
+
+  {#each game.players as player (player.id)}
+    <h4>Field ({player.name})</h4>
+    <div></div>
+    {#each game.playground.data[player.id].cards as card (card.raw)}
+      <Card name={player.name} {card} />
+    {/each}
   {/each}
 </section>

@@ -1,45 +1,71 @@
-import { AccessLevel } from "../common/Card";
+import { AccessLevel, Card } from "../common/Card";
 import { Deck } from "../common/Deck";
 import { Game, GameStatus } from "../common/Game";
 import { Player, PlayerStatus } from "../common/Player";
-import { SpeedPlayer } from "./SpeedPlayer";
-import { SpeedPlayground } from "./SpeedPlayground";
+import { Playground } from "../common/Playground";
 
 const OPEN_CARDS = 5;
 
 export class Speed extends Game {
-  playground: SpeedPlayground;
-  players: SpeedPlayer[];
-  constructor(players: SpeedPlayer[]) {
+  playground: Playground;
+  players: Player[];
+  constructor(players: Player[]) {
     super(players);
+    this.playground = new Playground(52);
     this.players = players;
-    this.playground = new SpeedPlayground(
-      52,
-      this.players.map(() => new Deck(52)),
-    );
+    this.players.forEach((player) => {
+      player.data = {
+        ...player.data,
+        stock: new Deck(52),
+      };
+      this.playground.data = {
+        ...this.playground.data,
+        [player.id]: new Deck(52),
+      };
+    });
   }
 
   protected init() {
     super.init();
-    this.distribute();
-    // put the first card from each player to the field
-    for (let i = 0; i < this.players.length; i++) {
-      const player = this.players[i];
-      const card = player.data.hand.getLastCard();
-      const field = this.playground.fields[i];
-      card.accessLevel = AccessLevel.ALL;
-      // TODO(FIX): swap hand and stock
-      this.transfer(player.data.hand, field, card);
+    // Distrubute all cards to players' stock
+    this.distribute(
+      undefined,
+      this.players.map((player) => player.data.stock),
+    );
 
-      for (let _i = 0; _i < OPEN_CARDS; _i++) {
-        const card = this.players[i].data.hand.getLastCard();
-        card.accessLevel = AccessLevel.ALL;
-        card.disabled = false;
-        this.transfer(player.data.hand, player.stock, card);
-      }
-    }
+    // Prepare 5 cards to players' hand
+    this.players.forEach((player) => {
+      this.prepareHand(player);
+    });
+
+    // Put one card to field after 1 second
+    this.prepareField();
+
     // TODO: allow game without turn
     // this.turn = -1;
+  }
+
+  private prepareField(): void {
+    for (let i = 0; i < this.players.length; i++) {
+      const player = this.players[i];
+      this.transfer(player.data.stock, this.playground.data[player.id]);
+    }
+  }
+
+  private prepareHand(player: Player): void {
+    while (
+      player.data.hand.cards.length < OPEN_CARDS &&
+      player.data.stock.cards.length > 0
+    ) {
+      const card = player.data.stock.getLastCard();
+      card.accessLevel = AccessLevel.ALL;
+      card.disabled = false;
+      this.transfer(player.data.stock, player.data.hand, card);
+    }
+  }
+
+  private addCardToField(player: Player, field: string, card?: Card): void {
+    this.transfer(player.data.stock, this.playground.data[field], card);
   }
 
   protected routine(): void {
