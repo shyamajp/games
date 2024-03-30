@@ -46,14 +46,13 @@
 
   <h3>Players</h3>
   {#each game.players as player (player.id)}
-    <h4>Hand</h4>
     <div>
       {player.name}: ({PlayerStatus[player.status]})
     </div>
+    <h4>Hand</h4>
     {#each player.data.hand.cards as card (card.raw)}
       <Card name={player.name} {card} />
     {/each}
-
     <h4>Stock</h4>
     {#each player.data.stock.cards as card (card.raw)}
       <Card name={player.name} {card} />

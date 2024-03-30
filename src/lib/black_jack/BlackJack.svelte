@@ -98,6 +98,7 @@
   {/each}
 
   <h3>Deck</h3>
+  <h4>Starter</h4>
   {#each game.playground.data.starter.cards as card (card.raw)}
     <Card name="deck" {card} />
   {/each}
