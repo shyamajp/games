@@ -1,3 +1,5 @@
+import { logs } from "../../store";
+
 enum Level {
   DEBUG = "debug",
   INFO = "info",
@@ -5,7 +7,7 @@ enum Level {
   ERROR = "error",
 }
 
-interface Log {
+export interface Log {
   level: Level;
   location?: string;
   message: string;
@@ -16,38 +18,39 @@ interface Log {
  * TODO: revisit this implementation
  * - find better namings
  * - dynamically create methods?
- * - show logs in console and in the UI
  */
 
 export class Logger {
   static data: Log[] = [];
 
   static debug(message: string, location?: string): void {
-    const timestamp = new Date().toISOString();
-    this.data.push({ level: Level.DEBUG, location, message, timestamp });
+    this.update(Level.DEBUG, message, location);
   }
 
   static info(message: string, location?: string): void {
-    const timestamp = new Date().toISOString();
-    this.data.push({ level: Level.INFO, location, message, timestamp });
+    this.update(Level.INFO, message, location);
   }
 
   static warn(message: string, location?: string): void {
-    const timestamp = new Date().toISOString();
-    this.data.push({ level: Level.WARN, location, message, timestamp });
+    this.update(Level.WARN, message, location);
   }
 
   static error(message: string, location?: string): void {
+    console.error("test");
+    this.update(Level.ERROR, message, location);
+  }
+
+  private static update(level: Level, message: string, location?: string) {
     const timestamp = new Date().toISOString();
-    this.data.push({ level: Level.ERROR, location, message, timestamp });
+    const log = { level: Level.ERROR, location, message, timestamp };
+    console[level](this.format(log));
+    this.data.push(log);
+    // Update store for Svelte components
+    logs.update((logs) => [...logs, this.format(log)]);
   }
 
   private static format(log: Log): string {
     const location = log.location ? ` (in ${log.location})` : "";
     return `[${log.timestamp}] ${log.level}: ${log.message}${location}`;
-  }
-
-  static output(count: number = 100): void {
-    this.data.slice(-count).forEach((log) => console.log(this.format(log)));
   }
 }
