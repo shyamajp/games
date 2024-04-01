@@ -1,4 +1,5 @@
 <script lang="ts">
+  import "./app.css";
   import { games } from "./constants";
   import { Logger } from "./logic/common/Logger";
   import { logs } from "./store";
@@ -47,5 +48,5 @@
 </main>
 <footer>Footer</footer>
 
-<style>
+<style lang="postcss">
 </style>

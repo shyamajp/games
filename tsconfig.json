@@ -25,6 +25,8 @@
     "src/**/*.svelte",
     "vite.config.ts",
     ".eslintrc.cjs",
-    ".prettierrc.cjs"
+    ".prettierrc.cjs",
+    "tailwind.config.js",
+    "postcss.config.js"
   ]
 }
