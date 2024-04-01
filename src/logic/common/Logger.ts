@@ -36,13 +36,12 @@ export class Logger {
   }
 
   static error(message: string, location?: string): void {
-    console.error("test");
     this.update(Level.ERROR, message, location);
   }
 
   private static update(level: Level, message: string, location?: string) {
     const timestamp = new Date().toISOString();
-    const log = { level: Level.ERROR, location, message, timestamp };
+    const log = { level, location, message, timestamp };
     console[level](this.format(log));
     this.data.push(log);
     // Update store for Svelte components
