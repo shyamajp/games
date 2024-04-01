@@ -13,6 +13,8 @@
       import(`./lib/${game.id}/${game.componentName}.svelte`).then((module) => {
         Game = module.default;
       });
+    } else {
+      Game = null;
     }
   }
 
@@ -22,31 +24,31 @@
   });
 </script>
 
-<header>Header</header>
-<aside>
-  <h2>Side</h2>
-  {#each games as game (game.id)}
-    <input
-      id={game.id}
-      name="game"
-      type="radio"
-      value={game.id}
-      on:change={handleGame}
-    />
-    <label for={game.id}>{game.name}</label><br />
-  {/each}
-  <h2>History</h2>
-  <ul>
-    <!-- TODO(REFACTOR): show history -->
-    {#each history.slice(-5).reverse() as log}
-      <li>{log}</li>
-    {/each}
-  </ul>
-</aside>
-<main>
-  <svelte:component this={Game} />
-</main>
-<footer>Footer</footer>
+<div>
+  <header>
+    Header
+    <label for="games">Start</label>
+    <select name="games" id="games" on:change={handleGame}>
+      <option selected value="">Choose a game</option>
+      {#each games as game (game.id)}
+        <option value={game.id}>{game.name}</option>
+      {/each}
+    </select>
+  </header>
+  <aside>
+    <h2>History</h2>
+    <ul>
+      <!-- TODO(REFACTOR): show history -->
+      {#each history.slice(-5).reverse() as log}
+        <li>{log}</li>
+      {/each}
+    </ul>
+  </aside>
+  <main>
+    <svelte:component this={Game} />
+  </main>
+  <footer>Footer</footer>
+</div>
 
 <style lang="postcss">
 </style>
