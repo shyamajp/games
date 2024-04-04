@@ -3,21 +3,9 @@
   import { BlackJack } from "../../logic/black_jack/BlackJack";
   import { Player, PlayerStatus } from "../../logic/common/Player";
   import { GameStatus } from "../../logic/common/Game";
+  import GameStatusButton from "../common/GameStatusButton.svelte";
 
   let game = new BlackJack([new Player("Alice"), new Player("Bob")]);
-
-  function handleStatus() {
-    if (game.status === GameStatus.UNSTARTED) {
-      game.start();
-    } else if (game.status === GameStatus.PLAYING) {
-      game.pause();
-    } else if (game.status === GameStatus.PAUSED) {
-      game.resume();
-    } else if (game.status === GameStatus.OVER) {
-      game.restart();
-    }
-    game = game;
-  }
 
   function handlePlay() {
     game.play();
@@ -61,19 +49,7 @@
   >
     Challenge
   </button>
-
-  <button type="button" on:click={handleStatus}>
-    {#if game.status === GameStatus.UNSTARTED}
-      Start
-    {:else if game.status === GameStatus.PLAYING}
-      Pause
-    {:else if game.status === GameStatus.PAUSED}
-      Resume
-    {:else if game.status === GameStatus.OVER}
-      Restart
-    {/if}
-  </button>
-
+  <GameStatusButton bind:game />
   <ul>
     <li>game: {game.getStatus(true)}</li>
     <li>

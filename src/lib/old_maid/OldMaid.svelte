@@ -3,6 +3,7 @@
   import { OldMaid } from "../../logic/old_maid/OldMaid";
   import { Player, PlayerStatus } from "../../logic/common/Player";
   import { GameStatus } from "../../logic/common/Game";
+  import GameStatusButton from "../common/GameStatusButton.svelte";
 
   let game = new OldMaid([
     new Player("Alice", 53),
@@ -12,19 +13,6 @@
   let playAs: Player = game.players[0];
   $: currentPlayer = game.getCurrentPlayer();
   $: nextPlayer = game.getNextPlayer();
-
-  function handleStatus() {
-    if (game.status === GameStatus.UNSTARTED) {
-      game.start();
-    } else if (game.status === GameStatus.PLAYING) {
-      game.pause();
-    } else if (game.status === GameStatus.PAUSED) {
-      game.resume();
-    } else if (game.status === GameStatus.OVER) {
-      game.restart();
-    }
-    game = game;
-  }
 
   function handlePlay() {
     game.play();
@@ -52,19 +40,7 @@
   >
     Play
   </button>
-
-  <button type="button" on:click={handleStatus}>
-    {#if game.status === GameStatus.UNSTARTED}
-      Start
-    {:else if game.status === GameStatus.PLAYING}
-      Pause
-    {:else if game.status === GameStatus.PAUSED}
-      Resume
-    {:else if game.status === GameStatus.OVER}
-      Restart
-    {/if}
-  </button>
-
+  <GameStatusButton bind:game />
   <ul>
     <li>game: {game.getStatus(true)}</li>
     <li>
