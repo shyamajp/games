@@ -4,13 +4,14 @@
   import { Player, PlayerStatus } from "../../logic/common/Player";
   import { GameStatus } from "../../logic/common/Game";
   import GameStatusButton from "../common/GameStatusButton.svelte";
+  import PlayAsSelector from "../common/PlayAsSelector.svelte";
 
   let game = new OldMaid([
     new Player("Alice", 53),
     new Player("Bob", 53),
     new Player("Charlie", 53),
   ]);
-  let playAs: Player = game.players[0];
+  let playAs: Player;
   $: currentPlayer = game.getCurrentPlayer();
   $: nextPlayer = game.getNextPlayer();
 
@@ -23,10 +24,6 @@
   function handleInput(e: any) {
     game.setInput(+e.target.value);
     game = game;
-  }
-
-  function handlePlayAs(e: any) {
-    playAs = game.players.find((p) => p.id === e.target.value)!;
   }
 </script>
 
@@ -47,12 +44,7 @@
       players: {game.players.map((p) => p.name).join(" | ")}
     </li>
     <li>
-      playing as:
-      <select name="playing-as" id="playing-as" on:change={handlePlayAs}>
-        {#each game.players as player (player.id)}
-          <option value={player.id}>{player.name}</option>
-        {/each}
-      </select>
+      <PlayAsSelector bind:playAs players={game.players} />
     </li>
   </ul>
   <hr />
@@ -76,7 +68,7 @@
         mine={player.id === playAs?.id}
         disabled={!(
           !card.disabled && game.getNextPlayer(playAs)?.id === nextPlayer?.id
-        ) || playAs.status !== PlayerStatus.PLAYING}
+        ) || playAs?.status !== PlayerStatus.PLAYING}
       />
     {/each}
   {/each}
