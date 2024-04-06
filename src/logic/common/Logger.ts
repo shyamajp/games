@@ -1,6 +1,6 @@
 import { logs } from "../../store";
 
-enum Level {
+export enum Level {
   DEBUG = "debug",
   INFO = "info",
   WARN = "warn",
@@ -49,7 +49,8 @@ export class Logger {
   }
 
   private static format(log: Log): string {
-    const location = log.location ? ` (in ${log.location})` : "";
-    return `[${log.timestamp}] ${log.level}: ${log.message}${location}`;
+    const location = log.location ? ` [${log.location}]` : "";
+    const logLevel = log.level.toUpperCase();
+    return `${log.timestamp} ${logLevel}${location}: ${log.message}`;
   }
 }

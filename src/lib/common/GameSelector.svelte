@@ -6,7 +6,7 @@
   function handleGame(e: any) {
     const game = games.find((game) => game.id === e.target.value);
     if (game) {
-      Logger.debug(`Selected game: ${game.name}`);
+      Logger.debug(`Selected game - ${game.name}`, "GameSelector");
       import(`../${game.id}/${game.componentName}.svelte`).then((module) => {
         Game = module.default;
       });
