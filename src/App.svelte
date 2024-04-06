@@ -4,19 +4,40 @@
   let Game: ConstructorOfATypedSvelteComponent | null = null;
 </script>
 
-<div>
-  <header>
-    Header
+<div id="app">
+  <header id="header">
     <GameSelector bind:Game />
   </header>
-  <aside>
-    <History />
-  </aside>
-  <main>
-    <svelte:component this={Game} />
-  </main>
-  <footer>Footer</footer>
+  <div id="main">
+    <aside>
+      <History />
+    </aside>
+    <main>
+      <svelte:component this={Game} />
+    </main>
+  </div>
+  <footer id="footer">shyamajp</footer>
 </div>
 
 <style>
+  #app {
+    height: 100vh;
+    overflow-x: hidden;
+    display: grid;
+    grid-template-rows: 50px auto 50px;
+  }
+
+  #header {
+    background-color: lightblue;
+  }
+
+  #main {
+    height: 100%;
+    display: grid;
+    grid-template-columns: 200px auto;
+  }
+
+  #footer {
+    background-color: lightblue;
+  }
 </style>
