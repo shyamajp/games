@@ -36,7 +36,7 @@ export class OldMaid extends Game {
   }
 
   protected routine(): void {
-    this.transferCard();
+    this.drawCard();
     this.setInput(undefined);
     this.judgePlayer(this.getNextPlayer()!);
     this.judge();
@@ -98,7 +98,7 @@ export class OldMaid extends Game {
     });
   }
 
-  private transferCard(): void {
+  private drawCard(): void {
     const currentPlayer = this.getCurrentPlayer();
     const nextPlayer = this.getNextPlayer()!;
     const card: Card = this.input || nextPlayer.data.hand.getRandomCard();
