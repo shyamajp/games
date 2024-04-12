@@ -76,22 +76,26 @@ export class OldMaid extends Game {
     }
   }
 
-  // TODO(REFACTOR): update logic
   private removePairs(): void {
     const currentPlayer = this.getCurrentPlayer();
     const cards: Card[] = currentPlayer.data.hand!.cards;
-    const skipIndeces: number[] = [];
-    const skipCards: Card[] = [];
+
+    let removables: Card[] = [];
+    const flag: { [key: number]: number } = {};
+
     for (let i = 0; i < cards.length; i++) {
-      for (let j = i + 1; j < cards.length; j++) {
-        if (!skipIndeces.includes(i) && cards[i].rank === cards[j].rank) {
-          skipIndeces.push(i, j);
-          skipCards.push(cards[i], cards[j]);
-        }
+      const card = cards[i];
+      const rank = card.rank;
+      if (flag[rank] >= 0) {
+        removables.push(cards[flag[rank]], card);
+        flag[rank] = -1;
+      } else {
+        flag[rank] = i;
       }
     }
 
-    skipCards.forEach((card) => {
+    // TODO: Allow multiple cards to be transfered
+    removables.forEach((card) => {
       this.transfer(currentPlayer.data.hand, this.playground.data.waste, card);
       card.accessLevel = AccessLevel.ALL;
       card.disabled = true;

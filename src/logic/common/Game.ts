@@ -74,6 +74,7 @@ export abstract class Game {
     }
   }
 
+  // TODO: Allow multiple cards to be transfered
   protected transfer(from: Deck, to: Deck, card?: Card): Card {
     return to.add(from.remove(card));
   }
