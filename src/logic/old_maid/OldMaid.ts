@@ -22,7 +22,7 @@ export class OldMaid extends Game {
 
     this.distribute();
     for (let i = 0; i < this.players.length; i++) {
-      this.removePairs();
+      this.removePairs(true);
       this.turn++;
     }
     this.turn = 0;
@@ -40,7 +40,7 @@ export class OldMaid extends Game {
     this.setInput(undefined);
     this.judgePlayer(this.getNextPlayer()!);
     this.judge();
-    this.removePairs();
+    this.removePairs(false);
     this.judgePlayer(this.getCurrentPlayer());
     this.judge();
     this.setDisabled();
@@ -76,18 +76,18 @@ export class OldMaid extends Game {
     }
   }
 
-  private removePairs(): void {
+  private removePairs(multiple: boolean): void {
     const currentPlayer = this.getCurrentPlayer();
     const cards: Card[] = currentPlayer.data.hand!.cards;
 
-    let removables: Card[] = [];
+    const removables: Card[] = [];
     const flag: { [key: number]: number } = {};
-
     for (let i = 0; i < cards.length; i++) {
       const card = cards[i];
       const rank = card.rank;
       if (flag[rank] >= 0) {
         removables.push(cards[flag[rank]], card);
+        if (!multiple) break;
         flag[rank] = -1;
       } else {
         flag[rank] = i;
