@@ -38,8 +38,10 @@ export class OldMaid extends Game {
   protected routine(): void {
     this.transferCard();
     this.setInput(undefined);
+    this.judgePlayer(this.getNextPlayer()!);
     this.judge();
     this.removePairs();
+    this.judgePlayer(this.getCurrentPlayer());
     this.judge();
     this.setDisabled();
   }
@@ -62,26 +64,16 @@ export class OldMaid extends Game {
     this.getNextPlayer()?.data.hand?.setDisabled(false);
   }
 
-  private judgePlayers(): void {
-    const players = this.getPlayers();
-    players.forEach((player) => {
-      if (player.data.hand?.cards.length === 0)
-        player.status = PlayerStatus.WON;
-    });
+  private judgePlayer(player: Player): void {
+    if (player.data.hand?.cards.length === 0) player.status = PlayerStatus.WON;
   }
 
-  private judgeGame(): void {
+  protected judge(): void {
     const players = this.getPlayers();
     if (players.length === 1) {
       players[0].status = PlayerStatus.LOST;
       this.end();
     }
-  }
-
-  // TODO: combine judgePlayers and judgeGame
-  protected judge(): void {
-    this.judgePlayers();
-    this.judgeGame();
   }
 
   // TODO(REFACTOR): update logic
