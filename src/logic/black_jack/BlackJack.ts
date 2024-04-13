@@ -85,8 +85,6 @@ export class BlackJack extends Game {
     if (sum > 21) {
       player.status = PlayerStatus.LOST;
       this.next();
-    } else if (sum === 21) {
-      this.next();
     }
   }
 
@@ -108,6 +106,22 @@ export class BlackJack extends Game {
         } else if (playerScore < dealerScore) {
           player.status = PlayerStatus.LOST;
         } else {
+          // Check for blackjack
+          if (playerScore === 21) {
+            // player has a blackjack, dealer does not
+            if (
+              player.data.hand.cards.length === 2 &&
+              this.dealer.data.hand.cards.length > 2
+            ) {
+              player.status = PlayerStatus.WON;
+              // dealer has a blackjack, player does not
+            } else if (
+              player.data.hand.cards.length > 2 &&
+              this.dealer.data.hand.cards.length === 2
+            ) {
+              player.status = PlayerStatus.LOST;
+            }
+          }
           player.status = PlayerStatus.DRAW;
         }
       }
