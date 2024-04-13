@@ -15,6 +15,13 @@
   $: currentPlayer = game.getCurrentPlayer();
   $: nextPlayer = game.getNextPlayer();
 
+  function getDisabled(card: any) {
+    return (
+      !(!card.disabled && game.getNextPlayer(playAs)?.id === nextPlayer?.id) ||
+      playAs?.status !== PlayerStatus.PLAYING
+    );
+  }
+
   function handlePlay() {
     game.play();
     game.next();
@@ -60,15 +67,12 @@
       {/if}
     </div>
     {#each player.data.hand.cards as card (card.raw)}
-      <!-- TODO(REFACTOR): clean the logic for disabled/hidden -->
       <Card
         name={player.name}
         {card}
         {handleInput}
         mine={player.id === playAs?.id}
-        disabled={!(
-          !card.disabled && game.getNextPlayer(playAs)?.id === nextPlayer?.id
-        ) || playAs?.status !== PlayerStatus.PLAYING}
+        disabled={getDisabled(card)}
       />
     {/each}
   {/each}
