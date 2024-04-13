@@ -41,13 +41,27 @@ export class BlackJack extends Game {
   }
 
   private challenge(): void {
-    this.dealer.data.hand.cards[1].accessLevel = AccessLevel.ALL;
-    while (this.calculateScore(this.dealer.data.hand.cards) < 17) {
-      this.transfer(
-        this.playground.data.starter,
-        this.dealer.data.hand,
-      ).accessLevel = AccessLevel.ALL;
+    // If all players have busted, skip dealer's turn
+    let challengeable = false;
+    for (let i = 0; i < this.players.length - 1; i++) {
+      if (this.players[i].status === PlayerStatus.PLAYING) {
+        challengeable = true;
+        break;
+      }
     }
+
+    // Draw until dealer's score is no less than 17
+    if (challengeable) {
+      this.dealer.data.hand.cards[1].accessLevel = AccessLevel.ALL;
+      while (this.calculateScore(this.dealer.data.hand.cards) < 17) {
+        this.transfer(
+          this.playground.data.starter,
+          this.dealer.data.hand,
+        ).accessLevel = AccessLevel.ALL;
+      }
+    }
+
+    // Judge the game
     this.judge();
   }
 
