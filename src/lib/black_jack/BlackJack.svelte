@@ -12,11 +12,6 @@
     game = game;
   }
 
-  function handleChallenge() {
-    game.challenge();
-    game = game;
-  }
-
   function handleNext() {
     game.next();
     game = game;
@@ -40,14 +35,6 @@
     on:click={handleNext}
   >
     Stand
-  </button>
-
-  <button
-    disabled={game.status !== GameStatus.PLAYING}
-    type="button"
-    on:click={handleChallenge}
-  >
-    Challenge
   </button>
   <GameStatusButton bind:game />
   <ul>

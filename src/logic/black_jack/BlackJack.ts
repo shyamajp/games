@@ -33,7 +33,14 @@ export class BlackJack extends Game {
     }
   }
 
-  public challenge(): void {
+  public next(): void {
+    super.next();
+    if (this.turn === this.players.length - 1) {
+      this.challenge();
+    }
+  }
+
+  private challenge(): void {
     this.dealer.data.hand.cards[1].accessLevel = AccessLevel.ALL;
     while (this.calculateScore(this.dealer.data.hand.cards) < 17) {
       this.transfer(
@@ -63,8 +70,10 @@ export class BlackJack extends Game {
     const sum = this.calculateScore(player.data.hand.cards);
     if (sum > 21) {
       player.status = PlayerStatus.LOST;
+      this.next();
     } else if (sum === 21) {
       player.status = PlayerStatus.WON;
+      this.next();
     }
   }
 
