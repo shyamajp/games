@@ -44,12 +44,19 @@ export class BlackJack extends Game {
     this.judge();
   }
 
-  public calculateScore(hands: Card[]) {
-    const cards = hands;
-    return cards.reduce((acc, card) => {
+  public calculateScore(cards: Card[]) {
+    let total = cards.reduce((acc, card) => {
       const score = Math.min(card.rank, 10);
       return acc + score;
     }, 0);
+    const aces = cards.filter((card) => card.rank === 1).length;
+    // Ace counts as 11 when total is no more than 21
+    for (let i = 0; i < aces; i++) {
+      if (total + 10 <= 21) {
+        total += 10;
+      }
+    }
+    return total;
   }
 
   private judgePlayer(player: Player): void {
