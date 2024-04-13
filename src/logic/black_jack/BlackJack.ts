@@ -1,4 +1,4 @@
-import { Card } from "../common/Card";
+import { AccessLevel, Card } from "../common/Card";
 import { Playground } from "../common/Playground";
 import { Game, GameStatus } from "../common/Game";
 import { Player, PlayerStatus } from "../common/Player";
@@ -20,6 +20,8 @@ export class BlackJack extends Game {
       this.judgePlayer(this.players[i]);
       this.turn++;
     }
+    this.dealer.data.hand.cards[0].accessLevel = AccessLevel.ALL;
+
     this.turn = 0;
   }
 
@@ -32,13 +34,17 @@ export class BlackJack extends Game {
   }
 
   public challenge(): void {
+    this.dealer.data.hand.cards[1].accessLevel = AccessLevel.ALL;
     while (this.calculateScore(this.dealer.data.hand.cards) < 17) {
-      this.transfer(this.playground.data.starter, this.dealer.data.hand);
+      this.transfer(
+        this.playground.data.starter,
+        this.dealer.data.hand,
+      ).accessLevel = AccessLevel.ALL;
     }
     this.judge();
   }
 
-  private calculateScore(hands: Card[]) {
+  public calculateScore(hands: Card[]) {
     const cards = hands;
     return cards.reduce((acc, card) => {
       const score = Math.min(card.rank, 10);
@@ -56,23 +62,25 @@ export class BlackJack extends Game {
   }
 
   protected judge(): void {
-    for (let i = 0; i < this.players.length; i++) {
+    const dealerScore = this.calculateScore(this.dealer.data.hand.cards);
+    for (let i = 0; i < this.players.length - 1; i++) {
       const player = this.players[i];
-      const playerScore = this.calculateScore(player.data.hand.cards);
-      const dealerScore = this.calculateScore(
-        this.playground.data.starter.cards,
-      );
+      // Skip players who has already won or lost
+      if (player.status !== PlayerStatus.PLAYING) continue;
 
-      if (playerScore > 21) {
-        player.status = PlayerStatus.LOST;
-      } else if (dealerScore > 21) {
+      // If dealer busts, all players win
+      if (dealerScore > 21) {
         player.status = PlayerStatus.WON;
-      } else if (playerScore > dealerScore) {
-        player.status = PlayerStatus.WON;
-      } else if (playerScore < dealerScore) {
-        player.status = PlayerStatus.LOST;
+        // Compare player score with dealer's
       } else {
-        player.status = PlayerStatus.DRAW;
+        const playerScore = this.calculateScore(player.data.hand.cards);
+        if (playerScore > dealerScore) {
+          player.status = PlayerStatus.WON;
+        } else if (playerScore < dealerScore) {
+          player.status = PlayerStatus.LOST;
+        } else {
+          player.status = PlayerStatus.DRAW;
+        }
       }
     }
 

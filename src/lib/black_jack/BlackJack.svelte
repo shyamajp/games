@@ -63,14 +63,18 @@
   {#each game.players as player (player.id)}
     <div>
       {#if player.id === game.getCurrentPlayer().id}
-        ▶️<strong>{player.name}</strong>: ({PlayerStatus[player.status]})
+        ▶️<strong>{player.name}</strong>:
       {:else}
-        {player.name}: ({PlayerStatus[player.status]})
+        {player.name}:
+      {/if}
+      {#if player.name !== "Dealer"}
+        ({PlayerStatus[player.status]})
       {/if}
     </div>
     {#each player.data.hand.cards as card (card.raw)}
       <Card name={player.name} {card} />
     {/each}
+    {game.calculateScore(player.data.hand.cards)}
   {/each}
 
   <h3>Deck</h3>
