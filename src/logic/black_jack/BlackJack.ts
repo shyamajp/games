@@ -86,7 +86,6 @@ export class BlackJack extends Game {
       player.status = PlayerStatus.LOST;
       this.next();
     } else if (sum === 21) {
-      player.status = PlayerStatus.WON;
       this.next();
     }
   }
@@ -95,8 +94,8 @@ export class BlackJack extends Game {
     const dealerScore = this.calculateScore(this.dealer.data.hand.cards);
     for (let i = 0; i < this.players.length - 1; i++) {
       const player = this.players[i];
-      // Skip players who has already won or lost
-      if (player.status !== PlayerStatus.PLAYING) continue;
+      // Skip players who has already lost
+      if (player.status === PlayerStatus.LOST) continue;
 
       // If dealer busts, all players win
       if (dealerScore > 21) {
