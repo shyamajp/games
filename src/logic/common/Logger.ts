@@ -23,6 +23,8 @@ export interface Log {
 export class Logger {
   static data: Log[] = [];
 
+  private constructor() {}
+
   static debug(message: string, location?: string): void {
     this.update(Level.DEBUG, message, location);
   }
