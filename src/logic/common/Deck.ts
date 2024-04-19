@@ -6,7 +6,7 @@ import {
   IllegalCardError,
   NoCardsLeftError,
 } from "./Error";
-import { AccessLevel, Card } from "./Card";
+import { AccessLevel, Card, CARDS } from "./Card";
 
 /**
  * Represents a deck of cards.
@@ -46,7 +46,7 @@ export class Deck {
    */
   generate(): void {
     for (let i = 0; i < this.count; i++) {
-      this.add(new Card(i));
+      this.add(CARDS[i]);
     }
   }
 

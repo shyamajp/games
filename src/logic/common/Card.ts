@@ -1,4 +1,4 @@
-import { IllegalCardError } from "./Error";
+import { CardAlreadyExistsError, IllegalCardError } from "./Error";
 
 export enum Color {
   RED = "red",
@@ -43,18 +43,13 @@ export enum AccessLevel {
  * @property {AccessLevel} accessLevel The access level of the card.
  * @property {boolean} disabled True if the card is disabled, false otherwise.
  * @throws {IllegalCardError} If the raw number is negative.
- * @example
- * const card = new Card(0);
- * console.log(card.content); // "♣A"
- * @example
- * const card = new Card(52);
- * console.log(card.content); // "Joker"
  */
 
 export class Card {
   readonly raw: number;
   private _accessLevel: AccessLevel = AccessLevel.NONE;
   private _disabled: boolean = true;
+  private static _count: number[] = [];
 
   /**
    * Constructs a new Card instance.
@@ -62,9 +57,15 @@ export class Card {
    * @throws {IllegalCardError} If the raw number is negative.
    */
   constructor(raw: number) {
-    if (!(raw >= 0)) {
+    // prevent duplicate cards from being created
+    if (Card._count.includes(raw)) {
+      throw new CardAlreadyExistsError();
+    }
+    // prevent more than 54 cards from being created
+    if (raw < 0 || Card._count.length === 54) {
       throw new IllegalCardError();
     }
+    Card._count.push(raw);
     this.raw = raw;
   }
 
@@ -139,3 +140,14 @@ export class Card {
     this._disabled = disabled;
   }
 }
+
+function generateCards(count: number = 54) {
+  const cards = [];
+  for (let i = 0; i < count; i++) {
+    cards.push(new Card(i));
+  }
+  return cards;
+}
+
+// Generate 54 cards in a deck
+export const CARDS = generateCards();
