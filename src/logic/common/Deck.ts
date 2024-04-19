@@ -8,6 +8,8 @@ import {
 } from "./Error";
 import { AccessLevel, Card, CARDS } from "./Card";
 
+// TODO(refactor): now that Card class follows the multipleton pattern, we can remove some of the error handling in the Deck class
+
 /**
  * Represents a deck of cards.
  * @property {string} id The unique identifier of the deck.
