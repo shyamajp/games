@@ -25,7 +25,7 @@ export class Deck {
    * Creates a new deck with the specified number of cards.
    * @param count The max number of cards in the deck.
    */
-  constructor(count: number = 52) {
+  constructor(count: number) {
     this.count = count;
   }
 
