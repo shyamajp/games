@@ -75,6 +75,7 @@ export class BlackJack extends Game {
     for (let i = 0; i < aces; i++) {
       if (total + 10 <= 21) {
         total += 10;
+        break;
       }
     }
     return total;
