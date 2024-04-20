@@ -3,7 +3,6 @@ import { getRandomElement } from "./utils";
 import {
   CardAlreadyExistsError,
   CardDoesNotExistError,
-  IllegalCardError,
   NoCardsLeftError,
 } from "./Error";
 import { AccessLevel, Card, CARDS } from "./Card";
@@ -67,7 +66,6 @@ export class Deck {
    * @throws {IllegalCardError} If the card is not within the range of the deck.
    */
   add(card: Card): Card {
-    if (card.raw >= this.count) throw new IllegalCardError();
     if (this.cards.map((card) => card.raw).includes(card.raw))
       throw new CardAlreadyExistsError();
     this.cards.push(card);
@@ -85,7 +83,6 @@ export class Deck {
   remove(card?: Card): Card {
     if (this.cards.length === 0) throw new NoCardsLeftError();
     if (card !== undefined) {
-      if (card.raw >= this.count) throw new IllegalCardError();
       const index = this.getCardIndex(card);
       this.cards.splice(index, 1);
       return card;
@@ -103,10 +100,6 @@ export class Deck {
    */
   getCardIndex(card: Card): number {
     if (this.cards.length === 0) throw new NoCardsLeftError();
-    if (card.raw >= this.count) {
-      console.log("illegall");
-      throw new IllegalCardError();
-    }
     const index = this.cards.map((card) => card.raw).indexOf(card.raw);
     if (index < 0) throw new CardDoesNotExistError();
     return index;
